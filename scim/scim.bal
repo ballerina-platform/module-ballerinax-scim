@@ -19,13 +19,12 @@
 # + ims - IM of the user
 # + meta - Meta infomation
 # + name - User given name and family name
-# + password - Password od the User
+# + password - Password of the User
 # + phoneNumbers - User contact numbers
 # + profileUrl - URL of the profile
 # + schemas - SCIM schemas
 # + userName - Username of the user
 public type SCIMUser record {
-    
     json[] addresses?;
     string[] emails?;
     string[] ims?;
@@ -36,5 +35,4 @@ public type SCIMUser record {
     string profileUrl?;
     string[] schemas;
     string userName;
-    
 };
