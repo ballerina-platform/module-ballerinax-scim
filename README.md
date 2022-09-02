@@ -10,5 +10,3 @@ Import the package,
 ```ballerina
 import ballerinax/scim
 ```
-## To create your own ballerina package
-[Creating a ballerina package](https://docs.google.com/document/d/17w11v-Jt8N2afKQm8TB6zpDyMwN3Vbub/edit?usp=sharing&ouid=101373359904096888710&rtpof=true&sd=true)
