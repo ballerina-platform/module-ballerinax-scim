@@ -44,10 +44,11 @@ public type SCIMEnterpriseUser record {
 
 public type SCIMGroup record {
     string id?;
-    string[] schemas?; 
-    string displayName?; 
-    Member members?;
+    string[] schemas; 
+    string displayName; 
+    Member[] members?;
     Meta meta?;
+    Role roles?;
 
 };
 
@@ -106,12 +107,12 @@ public type Certificate record {
     string value;   
 };
 
-public type Response record {
+public type UserResponse record {
     int totalResults?;
     int startIndex?;
     int itemsPerPage?;
     string[] schemas?;
-    Resource[] Resources?;
+    UserResource[] Resources?;
     
 };
 
@@ -123,7 +124,7 @@ public type ErrorResponse record {
     
 };
 
-public type Resource record {
+public type UserResource record {
     string[]|string schemas?; 
     string id?; 
     int|string externalId?;
@@ -156,7 +157,7 @@ public type Meta record {
     string created;
     string location;
     string lastModified;
-    string resourceType;
+    string resourceType?;
     string 'version?;
    
 };
@@ -205,13 +206,114 @@ public type UserUpdate record {
     Certificate[] x509Certificates?;
     Meta meta?;
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
-    };
+};
+
+public type Value record {
+    string[]|string schemas?;  
+    int externalId?;
+    string userName?;
+    Name name?; 
+    string displayName?; 
+    string nickName?;
+    string profileUrl?;
+    Email[] emails?;
+    Address[] addresses?;
+    Phone[] phoneNumbers?;
+    Ims[] ims?;
+    Role[] roles?;
+    Photo[] photos?;
+    string userType?;
+    string title?;
+    string preferredLanguage?; 
+    string locale?;
+    string timezone?; 
+    boolean active?;
+    Group[] groups?;
+    Certificate[] x509Certificates?;
+    Meta meta?;
+    SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
+    
+};
+
+public type PatchOp record {
+    string op;
+    Value value;
+    
+};
+
+public type UserPatch record {
+    string[] schemas;
+    PatchOp[] Operations;
+    
+};
+
+public type UserSearch record {
+    string[] schemas;
+    string[] attributes;
+    string filter;
+    string domain?;
+    int startIndex?;
+    int count?;
+    
+};
+
+public type GroupResponse record {
+    int totalResults?;
+    int startIndex?;
+    int itemsPerPage?;
+    string[] schemas?;
+    GroupResource[] Resources?;
+    
+};
+
+public type GroupResource record {
+    string displayName?;
+    Meta meta;
+    Member[] members?;
+    Role[] roles?;
+    string id?;
+    
+};
+
+public type GroupUpdate record {
+    string displayName; 
+    Member[] members?;
+    Meta meta?;
+    Role roles?;
+
+};
+
+public type GroupPatch record {
+    string[] schemas;
+    PatchOpGroup[] Operations;
+    
+};
+
+public type PatchOpGroup record {
+    string op;
+    ValueGroup value;
+    
+};
+
+public type ValueGroup record {
+    Member[] members?;
+    Meta meta?;
+    Role roles?;
+    
+};
+
+public type GroupSearch record {
+    string[] schemas;
+    string filter;
+    int startIndex?;
+
+};
 
 public type Operation record {
     string method;
     string path;
     string bulkId?;
-    SCIMUser|Data data?;
+    SCIMUser|BulkUserUpdate|BulkUserReplace|SCIMGroup|BulkGroupUpdate|BulkGroupReplace data?;
     
 };
 
@@ -222,10 +324,36 @@ public type Bulk record {
     
 };
 
-public type Data record {
+public type BulkUserReplace record {
+    string[] schemas;
+    string username;
+    Name name;
+    
+};
+
+public type BulkUserUpdate record {
     string op;
     string path;
     string value;
+    
+};
+
+public type BulkGroupReplace record {
+    string displayName;
+    MemberReplace[] members;
+    
+};
+
+public type MemberReplace record {
+    string value;
+    string display;
+    
+};
+
+public type BulkGroupUpdate record {
+    string op;
+    string path;
+    json[] value;
     
 };
 
@@ -289,40 +417,40 @@ public class Client{
         "Authorization": "Bearer " + token};
     }
 
-    public isolated function getUsers() returns Response|error {
+    public isolated function getUsers() returns UserResponse|error {
         json|error response =  self.clientEndpoint->get("/Users", self.headers, json);
         if (response is json) {
-            Response user = check response.cloneWithType(Response);
-            return user;
+            UserResponse users = check response.cloneWithType(UserResponse);
+            return users;
         } else {
             return response;
         }
     }
 
-    public isolated function getUser(string id) returns Resource|error {
+    public isolated function getUser(string id) returns UserResource|error {
         json|error response =  self.clientEndpoint->get("/Users/" + id, self.headers, json);
         if (response is json) {
-            Resource user = check response.cloneWithType(Resource);
+            UserResource user = check response.cloneWithType(UserResource);
             return user;
         } else {
             return response;
         }
     }
 
-    public isolated function createUser(SCIMUser data) returns Resource|error {
+    public isolated function createUser(SCIMUser data) returns UserResource|error {
         json|error response =  self.clientEndpoint->post("/Users", data, self.headers, (), json);
         if (response is json) {
-            Resource user = check response.cloneWithType(Resource);
+            UserResource user = check response.cloneWithType(UserResource);
             return user;
         } else {
             return response;
         }
     }
 
-    public isolated function updateUser(string id, UserUpdate data) returns Resource|error {
+    public isolated function updateUser(string id, UserUpdate data) returns UserResource|error {
         json|error response =  self.clientEndpoint->put("/Users/" + id, data ,self.headers, (), json);
         if (response is json) {
-            Resource user = check response.cloneWithType(Resource);
+            UserResource user = check response.cloneWithType(UserResource);
             return user;
         } else {
             return response;
@@ -340,19 +468,99 @@ public class Client{
         // }
     }
     
-    public isolated function patchUser(string id, UserUpdate data) returns Resource|error {
+    public isolated function patchUser(string id, UserPatch data) returns UserResponse|error {
         json|error response =  self.clientEndpoint->patch("/Users/" + id, data , self.headers, (), json);
         if (response is json) {
-            Resource user = check response.cloneWithType(Resource);
+            UserResponse user = check response.cloneWithType(UserResponse);
             return user;
         } else {
             return response;
         }
     }
+
+    public isolated function searchUser(UserSearch data) returns UserResponse|error {
+        json|error response =  self.clientEndpoint->post("/Users/.search", data , self.headers, (), json);
+        if (response is json) {
+            UserResponse users = check response.cloneWithType(UserResponse);
+            return users;
+        } else {
+            return response;
+        }
+    }
     
+    public isolated function getGroups() returns GroupResponse|error {
+        json|error response =  self.clientEndpoint->get("/Groups", self.headers, json);
+        if (response is json) {
+            GroupResponse groups = check response.cloneWithType(GroupResponse);
+            return groups;
+        } else {
+            return response;
+        }
+    }
+
+    public isolated function getGroup(string id) returns GroupResource|error {
+        json|error response =  self.clientEndpoint->get("/Groups/" + id, self.headers, json);
+        if (response is json) {
+            GroupResource group = check response.cloneWithType(GroupResource);
+            return group;
+        } else {
+            return response;
+        }
+    }
+
+    public isolated function createGroup(SCIMGroup data) returns GroupResource|error {
+        json|error response =  self.clientEndpoint->post("/Groups", data, self.headers, (), json);
+        if (response is json) {
+            GroupResource group = check response.cloneWithType(GroupResource);
+            return group;
+        } else {
+            return response;
+        }
+    }
+
+    public isolated function updateGroup(string id, GroupUpdate data) returns GroupResource|error {
+        json|error response =  self.clientEndpoint->put("/Groups/" + id, data ,self.headers, (), json);
+        if (response is json) {
+           GroupResource group = check response.cloneWithType(GroupResource);
+            return group;
+        } else {
+            return response;
+        }
+    }
 
 
-    public isolated function bulkUser(Bulk data) returns BulkResponse|error {
+    public isolated function deleteGroup(string id) returns json|error {
+        json|error response =  self.clientEndpoint->delete("/Groups/" + id,(), self.headers, (), json);
+        // if (response is json) {
+        //     Resource user = check response.cloneWithType(Resource);
+        //     return user;
+        // } else {
+            return response;
+        // }
+    }
+    
+    public isolated function patchGroup(string id, GroupPatch data) returns GroupResponse|error {
+        json|error response =  self.clientEndpoint->patch("/Groups/" + id, data , self.headers, (), json);
+        if (response is json) {
+            GroupResponse group = check response.cloneWithType(GroupResponse);
+            return group;
+        } else {
+            return response;
+        }
+    }
+
+    public isolated function searchGroup(GroupSearch data) returns GroupResponse|error {
+        json|error response =  self.clientEndpoint->post("/Groups/.search", data , self.headers, (), json);
+        if (response is json) {
+            GroupResponse groups = check response.cloneWithType(GroupResponse);
+            return groups;
+        } else {
+            return response;
+        }
+    }
+
+
+    public isolated function bulk(Bulk data) returns BulkResponse|error {
         json|error response =  self.clientEndpoint->post("/Bulk", data, self.headers, (), json);
         if (response is json) {
             BulkResponse user = check response.cloneWithType(BulkResponse);
