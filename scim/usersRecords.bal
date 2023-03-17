@@ -65,6 +65,7 @@ public type SCIMUser record {
     Certificate[] x509Certificates?;
     Meta meta?;
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
+
 };
 
 # + employeeNumber - identifier in association with the organization.  
@@ -196,7 +197,7 @@ public type ErrorResponse record {
 # + active - administrative status of the user 
 # + meta - metadata of the user 
 # + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - attributes belong to business or enterprise extension schema  
-# + urn\:scim\:wso2\:schema - attributes belong to WSO2 extension schema  
+# + urn\:scim\:wso2\:schema - attributes belong to WSO2 custom extension schema  
 # + roles - list of roles for the user
 public type UserResource record {
     string[]|string schemas?;
@@ -215,7 +216,7 @@ public type UserResource record {
     boolean active?;
     Meta meta;
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
-    WSO2 urn\:scim\:wso2\:schema?;
+    Custom urn\:scim\:wso2\:schema?;
     Role[] roles?;
 };
 
@@ -264,7 +265,7 @@ public type Name record {
 # + photoUrl - URI of the user's photo  
 # + userAccountType - type of the user account  
 # + askPassword - whether the user is asked to provide a password
-public type WSO2 record {
+public type Custom record {
     string idpType;
     boolean|string isReadOnlyUser?;
     string userSource?;

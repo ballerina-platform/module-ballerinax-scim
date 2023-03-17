@@ -107,4 +107,3 @@ public type GroupSearch record {
     string filter;
     int startIndex?;
 };
-

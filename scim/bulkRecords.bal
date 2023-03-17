@@ -106,4 +106,3 @@ public type BulkResponse record {
     string[] schemas;
     OperationResponse[] Operations;
 };
-
