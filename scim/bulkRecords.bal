@@ -1,4 +1,4 @@
-// Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com).
+// Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com).
 
 // WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,23 +14,25 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# + failOnErrors - No. of errors to fail the bulk request
+# + failOnErrors - Number of errors that the service provider will accept before the operation is terminated and an error response is returned
 # + schemas - URIs of the SCIM schemas used in the request  
-# + Operations - List of operations
+# + Operations - List of operations within the bulk
 public type Bulk record {
     int failOnErrors?;
     string[] schemas;
     Operation[] Operations;
 };
 
-# + method - method of the operation  
+# + method - HTTP method of the current operation ["POST", "PUT", "PATCH", or "DELETE"]
 # + path - path of the operation 
 # + bulkId - bulkId of the operation 
 # + data - data of the operation
+# + version - current resource version
 public type Operation record {
     string method;
     string path;
     string bulkId?;
+    string 'version?;
     SCIMUser|BulkUserUpdate|BulkUserReplace|SCIMGroup|BulkGroupUpdate|BulkGroupReplace data?;
 };
 

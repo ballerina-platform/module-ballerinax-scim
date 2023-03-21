@@ -1,6 +1,20 @@
-import ballerina/oauth2;
+// Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com).
+
+// WSO2 LLC. licenses this file to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file except
+// in compliance with the License.
+// You may obtain a copy of the License at
+
+// http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
 import ballerina/http;
-import ballerina/io;
 
 # This client is used to connect to the SCIM2 APIs of Asgardeo for Inbound User Provisioning.
 @display {label: "SCIM Client Connector"}
@@ -9,9 +23,8 @@ public class Client {
     private final string clientId;
     private final string clientSecret;
     private final string[] scope;
-    final oauth2:ClientOAuth2Provider provider;
+    // final oauth2:ClientOAuth2Provider provider;
     final http:Client clientEndpoint;
-    final map<string> headers;
 
     # Initializes the SCIM client.
     #
@@ -24,23 +37,13 @@ public class Client {
         self.clientId = clientId;
         self.clientSecret = clientSecret;
         self.scope = scope;
-
-        self.provider = new ({
-            tokenUrl: HOST_URL + TENANT_PATH + self.orgName + "/oauth2/token",
+        http:OAuth2ClientCredentialsGrantConfig config = {
+            tokenUrl: string `${HOST_URL}/${TENANT_PATH}/${self.orgName}/oauth2/token`,
             clientId: clientId,
             clientSecret: clientSecret,
             scopes: scope
-        });
-
-        self.clientEndpoint = check new (HOST_URL + TENANT_PATH + self.orgName + SCIM, {httpVersion: "1.1"});
-
-        string token = check self.provider.generateToken();
-        io:print(token);
-
-        self.headers = {
-            "accept": "application/scim+json",
-            "Authorization": "Bearer " + token
         };
+        self.clientEndpoint = check new (string `${HOST_URL}/${TENANT_PATH}/${self.orgName}/${SCIM}`, {auth: config, httpVersion: "1.1"});
     }
 
     # Gets the list of users.
@@ -48,13 +51,8 @@ public class Client {
     # + return - The list of users
     @display {label: "Get Users"}
     public isolated function getUsers() returns UserResponse|error {
-        json|error response = self.clientEndpoint->get(USERS, self.headers, json);
-        if (response is json) {
-            UserResponse users = check response.cloneWithType(UserResponse);
-            return users;
-        } else {
-            return response;
-        }
+        UserResponse response = check self.clientEndpoint->get(USERS);
+        return response;
     }
 
     # Gets a user by the user ID.
@@ -63,13 +61,8 @@ public class Client {
     # + return - The user
     @display {label: "Get User by ID"}
     public isolated function getUser(@display {label: "User Id"} string id) returns UserResource|error {
-        json|error response = self.clientEndpoint->get(USERS + "/" + id, self.headers, json);
-        if (response is json) {
-            UserResource user = check response.cloneWithType(UserResource);
-            return user;
-        } else {
-            return response;
-        }
+        UserResource response = check self.clientEndpoint->get(string `${USERS}/${id}`);
+        return response;
     }
 
     # Creates a user.
@@ -78,13 +71,8 @@ public class Client {
     # + return - The created user
     @display {label: "Create User"}
     public isolated function createUser(@display {label: "User data"} SCIMUser data) returns UserResource|error {
-        json|error response = self.clientEndpoint->post(USERS, data, self.headers, (), json);
-        if (response is json) {
-            UserResource user = check response.cloneWithType(UserResource);
-            return user;
-        } else {
-            return response;
-        }
+        UserResource response = check self.clientEndpoint->post(USERS, data);
+        return response;
     }
 
     # Updates a user.
@@ -94,13 +82,8 @@ public class Client {
     # + return - The updated user
     @display {label: "Update User"}
     public isolated function updateUser(@display {label: "User Id"} string id, @display {label: "User updated data"} UserUpdate data) returns UserResource|error {
-        json|error response = self.clientEndpoint->put(USERS + "/" + id, data, self.headers, (), json);
-        if (response is json) {
-            UserResource user = check response.cloneWithType(UserResource);
-            return user;
-        } else {
-            return response;
-        }
+        UserResource response = check self.clientEndpoint->put(string `${USERS}/${id}`, data);
+        return response;
     }
 
     # Deletes a user.
@@ -109,7 +92,7 @@ public class Client {
     # + return - The response
     @display {label: "Delete User"}
     public isolated function deleteUser(@display {label: "User Id"} string id) returns json|error {
-        json|error response = self.clientEndpoint->delete(USERS + "/" + id, (), self.headers, (), json);
+        json response = check self.clientEndpoint->delete(string `${USERS}/${id}`);
         return response;
     }
 
@@ -120,13 +103,8 @@ public class Client {
     # + return - The patched user
     @display {label: "Patch User"}
     public isolated function patchUser(@display {label: "User Id"} string id, @display {label: "Patch data"} UserPatch data) returns UserResponse|error {
-        json|error response = self.clientEndpoint->patch(USERS + "/" + id, data, self.headers, (), json);
-        if (response is json) {
-            UserResponse user = check response.cloneWithType(UserResponse);
-            return user;
-        } else {
-            return response;
-        }
+        UserResponse response = check self.clientEndpoint->patch(string `${USERS}/${id}`, data);
+        return response;
     }
 
     # Searches for a user.
@@ -135,13 +113,8 @@ public class Client {
     # + return - The list of users
     @display {label: "Search User"}
     public isolated function searchUser(@display {label: "Search Data"} UserSearch data) returns UserResponse|error {
-        json|error response = self.clientEndpoint->post(USERS + "/.search", data, self.headers, (), json);
-        if (response is json) {
-            UserResponse users = check response.cloneWithType(UserResponse);
-            return users;
-        } else {
-            return response;
-        }
+        UserResponse|error response = self.clientEndpoint->post(string `${USERS}/.search`, data);
+        return response;
     }
 
     # Gets the list of groups.
@@ -149,13 +122,8 @@ public class Client {
     # + return - The list of groups
     @display {label: "Get Groups"}
     public isolated function getGroups() returns GroupResponse|error {
-        json|error response = self.clientEndpoint->get(GROUPS, self.headers, json);
-        if (response is json) {
-            GroupResponse groups = check response.cloneWithType(GroupResponse);
-            return groups;
-        } else {
-            return response;
-        }
+        GroupResponse|error response = self.clientEndpoint->get(GROUPS);
+        return response;
     }
 
     # Gets a group by the group ID.
@@ -164,13 +132,8 @@ public class Client {
     # + return - The group
     @display {label: "Get Group by ID"}
     public isolated function getGroup(@display {label: "Group Id"} string id) returns GroupResource|error {
-        json|error response = self.clientEndpoint->get(GROUPS + "/" + id, self.headers, json);
-        if (response is json) {
-            GroupResource group = check response.cloneWithType(GroupResource);
-            return group;
-        } else {
-            return response;
-        }
+        GroupResource response = check self.clientEndpoint->get(string `${GROUPS}/${id}`);
+        return response;
     }
 
     # Creates a group.
@@ -179,13 +142,8 @@ public class Client {
     # + return - The created group
     @display {label: "Create Group"}
     public isolated function createGroup(@display {label: "Group Data"} SCIMGroup data) returns GroupResource|error {
-        json|error response = self.clientEndpoint->post(GROUPS, data, self.headers, (), json);
-        if (response is json) {
-            GroupResource group = check response.cloneWithType(GroupResource);
-            return group;
-        } else {
-            return response;
-        }
+        GroupResource response = check self.clientEndpoint->post(GROUPS, data);
+        return response;
     }
 
     # Updates a group.
@@ -195,13 +153,8 @@ public class Client {
     # + return - The updated group
     @display {label: "Update Group"}
     public isolated function updateGroup(@display {label: "Group Id"} string id, @display {label: "Updated data"} GroupUpdate data) returns GroupResource|error {
-        json|error response = self.clientEndpoint->put(GROUPS + "/" + id, data, self.headers, (), json);
-        if (response is json) {
-            GroupResource group = check response.cloneWithType(GroupResource);
-            return group;
-        } else {
-            return response;
-        }
+        GroupResource response = check self.clientEndpoint->put(string `${GROUPS}/${id}`, data);
+        return response;
     }
 
     # Deletes a group.
@@ -210,7 +163,7 @@ public class Client {
     # + return - The response
     @display {label: "Delete Group"}
     public isolated function deleteGroup(@display {label: "Group Id"} string id) returns json|error {
-        json|error response = self.clientEndpoint->delete(GROUPS + "/" + id, (), self.headers, (), json);
+        json response = check self.clientEndpoint->delete(string `${GROUPS}/${id}`);
         return response;
     }
 
@@ -221,13 +174,8 @@ public class Client {
     # + return - The patched group
     @display {label: "Patch Group"}
     public isolated function patchGroup(@display {label: "Group Id"} string id, @display {label: "Patch data"} GroupPatch data) returns GroupResponse|error {
-        json|error response = self.clientEndpoint->patch(GROUPS + "/" + id, data, self.headers, (), json);
-        if (response is json) {
-            GroupResponse group = check response.cloneWithType(GroupResponse);
-            return group;
-        } else {
-            return response;
-        }
+        GroupResponse response = check self.clientEndpoint->patch(string `${GROUPS}/${id}`, data);
+        return response;
     }
 
     # Searches for a group.
@@ -236,13 +184,8 @@ public class Client {
     # + return - The list of groups
     @display {label: "Search Group"}
     public isolated function searchGroup(@display {label: "Search data"} GroupSearch data) returns GroupResponse|error {
-        json|error response = self.clientEndpoint->post(GROUPS + "/.search", data, self.headers, (), json);
-        if (response is json) {
-            GroupResponse groups = check response.cloneWithType(GroupResponse);
-            return groups;
-        } else {
-            return response;
-        }
+        GroupResponse response = check self.clientEndpoint->post(string `${GROUPS}/.search`, data);
+        return response;
     }
 
     # Gets the list of service providers.
@@ -251,12 +194,7 @@ public class Client {
     # + return - The response of the operation
     @display {label: "Bulk Operation"}
     public isolated function bulk(@display {label: "Bulk operation data"} Bulk data) returns BulkResponse|error {
-        json|error response = self.clientEndpoint->post(BULK, data, self.headers, (), json);
-        if (response is json) {
-            BulkResponse user = check response.cloneWithType(BulkResponse);
-            return user;
-        } else {
-            return response;
-        }
+        BulkResponse response = check self.clientEndpoint->post(BULK, data);
+        return response;
     }
 }
