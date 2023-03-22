@@ -14,31 +14,33 @@
 // specific language governing permissions and limitations
 // under the License.
 
+# Represents the SCIM User resource.
+#
 # + schemas - URIs of the used SCIM schemas  
-# + id - unique identifier by service provider  
-# + externalId - identifier by the provisioning client  
-# + userName - unique identifier within the system  
-# + name - components of the user's name  
-# + displayName - name displayed to end-users  
-# + nickName - casual name of the user 
+# + id - Unique identifier by service provider  
+# + externalId - Identifier by the provisioning client  
+# + userName - Unique identifier within the system  
+# + name - Components of the user's name  
+# + displayName - Name displayed to end-users  
+# + nickName - Casual name of the user 
 # + profileUrl - URI of the user's online profile  
-# + emails - email addresses for the User 
-# + addresses - physical mailing address for the user  
-# + phoneNumbers - phone numbers for the user  
-# + ims - instant messaging address for the user  
-# + roles - list of roles for the user  
+# + emails - Email addresses for the User 
+# + addresses - Physical mailing address for the user  
+# + phoneNumbers - Phone numbers for the user  
+# + ims - Instant messaging address for the user  
+# + roles - List of roles for the user  
 # + photos - URI of image of the user  
-# + userType - relationship between the organization and the user  
-# + title - title of the user
-# + preferredLanguage - preferred written or spoken languages of the user
-# + locale - default location of the user
-# + timezone - time zone of the user
-# + active - administrative status of the user 
-# + password - password of the user
-# + groups - groups to which the user belongs  
-# + x509Certificates - certificates associated with the user 
-# + meta - metadata of the user  
-# + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - attributes belong to business or enterprise extension schema
+# + userType - Relationship between the organization and the user  
+# + title - Title of the user
+# + preferredLanguage - Preferred written or spoken languages of the user
+# + locale - Default location of the user
+# + timezone - Time zone of the user
+# + active - Administrative status of the user 
+# + password - Password of the user
+# + groups - Groups to which the user belongs  
+# + x509Certificates - Certificates associated with the user 
+# + meta - Metadata of the user  
+# + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema
 public type SCIMUser record {
     string[]|string schemas?;
     string id?;
@@ -68,13 +70,15 @@ public type SCIMUser record {
 
 };
 
-# + employeeNumber - identifier in association with the organization.  
-# + costCenter - name of a cost center  
-# + organization - name of an organization  
-# + division - name of a division  
-# + department - name of a department  
-# + manager - manager of the user  
-# + verifyEmail - email address has been verified or not
+# Represents the SCIM Enterprise User extensioon resource.
+#
+# + employeeNumber - Identifier in association with the organization.  
+# + costCenter - Name of a cost center  
+# + organization - Name of an organization  
+# + division - Name of a division  
+# + department - Name of a department  
+# + manager - Manager of the user  
+# + verifyEmail - Email address has been verified or not
 public type SCIMEnterpriseUser record {
     string employeeNumber?;
     int costCenter?;
@@ -85,32 +89,38 @@ public type SCIMEnterpriseUser record {
     boolean verifyEmail?;
 };
 
-# + value - id of the SCIM resource representing the manager of the user
-# + displayName - displayName of the manager of the user  
-# + \$ref - reference URI 
+# Represents the sub-attributes of the manager attribute in the SCIMEnterpriseUser record.
+#
+# + value - Id of the SCIM resource representing the manager of the user
+# + displayName - DisplayName of the manager of the user  
+# + \$ref - Reference URI 
 public type Manager record {
     string value?;
     string displayName?;
     string \$ref?;
 };
 
-# + value - canonicalized representation of the email value  
-# + 'type - email classification  
-# + primary - whether the primary email address
+# Represents the sub-attributes of the emails complex attribute in SCIMUser record.
+#
+# + value - Canonicalized representation of the email value  
+# + 'type - Email classification  
+# + primary - Whether the primary email address
 public type Email record {
     string value?;
     string 'type?;
     boolean primary?;
 };
 
-# + 'type - type of the address  
-# + streetAddress - street address component
-# + locality - city or locality component  
-# + region - state or region component  
-# + postalCode - zip code or postal code component  
-# + country - country name component  
-# + formatted - full mailing address  
-# + primary - whether the primary address
+# Represents the sub-attributes of the addresses complex attribute in SCIMUser record.
+#
+# + 'type - Type of the address  
+# + streetAddress - Street address component
+# + locality - City or locality component  
+# + region - State or region component  
+# + postalCode - Zip code or postal code component  
+# + country - Country name component  
+# + formatted - Full mailing address  
+# + primary - Whether the primary address
 public type Address record {
     string 'type;
     string streetAddress;
@@ -122,46 +132,57 @@ public type Address record {
     boolean primary?;
 };
 
-# + value - phonenumber in accordance with the format defined  
-# + 'type - type of the phonenumber
+# Represents the sub-attributes of the phoneNumbers complex attribute in SCIMUser record.
+#
+# + value - Phonenumber in accordance with the format defined  
+# + 'type - Type of the phonenumber
 public type Phone record {
     string value;
     string 'type;
 };
 
-# + value - instant messaging address  
-# + 'type - type of the instant messaging address
+# Represents the sub-attributes of the ims complex attribute in SCIMUser record.
+#
+# + value - Instant messaging address  
+# + 'type - Type of the instant messaging address
 public type Ims record {
     string value;
     string 'type;
 };
 
+# Represents the sub-attributes of the photos complex attribute in SCIMUser record.
+#
 # + value - URI of the photo
-# + 'type - photo size value
+# + 'type - Photo size value
 public type Photo record {
     string value;
     string 'type;
 };
 
-# + value - id of the group  
-# + display - name of the group  
-# + \$ref - reference URI 
+# Represents the sub-attributes of the groups complex attribute in SCIMUser record.
+# + value - Id of the group  
+# + display - Name of the group  
+# + \$ref - Reference URI 
 public type Group record {
     string value;
     string display;
     string \$ref;
 };
 
+# Represents the sub-attributes of the certificates complex attribute in SCIMUser record.
+#
 # + value - DER-encoded X.509 certificate
 public type Certificate record {
     string value;
 };
 
-# + totalResults - total number of results  
-# + startIndex - starting index of the returned results
-# + itemsPerPage - number of results returned per page  
+# Represents the response of the getUsers and searchUser operations.
+#
+# + totalResults - Total number of results  
+# + startIndex - Starting index of the returned results
+# + itemsPerPage - Number of results returned per page  
 # + schemas - URIs of the used SCIM schemas  
-# + Resources - list of returned users
+# + Resources - List of returned users
 public type UserResponse record {
     int totalResults?;
     int startIndex?;
@@ -170,7 +191,9 @@ public type UserResponse record {
     UserResource[] Resources?;
 };
 
-# + detail - detailed error description  
+# Represents the error response
+#
+# + detail - Detailed error description  
 # + status - HTTP status code 
 # + schemas - URIs of the used SCIM schemas  
 # + scimType - SCIM type
@@ -181,24 +204,26 @@ public type ErrorResponse record {
     string scimType?;
 };
 
+# Represents the response of the createUser and getUser operations.
+#
 # + schemas - URIs of the used SCIM schemas
-# + id - unique identifier by service provider  
-# + externalId - identifier by the provisioning client   
-# + userName - unique identifier for the user 
-# + name - name of the user  
-# + displayName - name displayed to end-users
-# + nickName - casual name of the user  
+# + id - Unique identifier by service provider  
+# + externalId - Identifier by the provisioning client   
+# + userName - Unique identifier for the user 
+# + name - Name of the user  
+# + displayName - Name displayed to end-users
+# + nickName - Casual name of the user  
 # + profileUrl - URI of the user's online profile  
-# + emails - email addresses for the User  
-# + addresses - physical mailing address for the user  
-# + phoneNumbers - phone numbers for the user  
+# + emails - Email addresses for the User  
+# + addresses - Physical mailing address for the user  
+# + phoneNumbers - Phone numbers for the user  
 # + photos - URI of image of the user  
-# + locale - default location of the user  
-# + active - administrative status of the user 
-# + meta - metadata of the user 
-# + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - attributes belong to business or enterprise extension schema  
-# + urn\:scim\:wso2\:schema - attributes belong to WSO2 custom extension schema  
-# + roles - list of roles for the user
+# + locale - Default location of the user  
+# + active - Administrative status of the user 
+# + meta - Metadata of the user 
+# + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema  
+# + urn\:scim\:wso2\:schema - Attributes belong to WSO2 custom extension schema  
+# + roles - List of roles for the user
 public type UserResource record {
     string[]|string schemas?;
     string id?;
@@ -220,10 +245,12 @@ public type UserResource record {
     Role[] roles?;
 };
 
-# + display - human readable name, primarily used for display purposes
-# + value - label representing a collection of entitlements  
-# + \$ref - reference URI 
-# + resourceType - resource type of the entitlement
+# Represents the sub-attributes of the roles complex attribute in SCIMUser record.
+#
+# + display - Human readable name, primarily used for display purposes
+# + value - Label representing a collection of entitlements  
+# + \$ref - Reference URI 
+# + resourceType - Resource type of the entitlement
 public type Role record {
     string display;
     string value?;
@@ -231,11 +258,13 @@ public type Role record {
     string resourceType?;
 };
 
+# Represents the sub-attributes of the meta complex attribute in SCIMUser record.
+#
 # + created - DateTime that the resource was added 
 # + location - URI of the resource being returned 
-# + lastModified - most recent DateTime that the details of this resource were updated  
-# + resourceType - name of the resource type of the resource  
-# + 'version - version of the resource being returned
+# + lastModified - Most recent DateTime that the details of this resource were updated  
+# + resourceType - Name of the resource type of the resource  
+# + 'version - Version of the resource being returned
 public type Meta record {
     string created;
     string location;
@@ -244,12 +273,14 @@ public type Meta record {
     string 'version?;
 };
 
-# + formatted - full name, including all middle names, titles, and suffixes as appropriate, formatted for display  
-# + givenName - given name of the User  
-# + familyName - family name of the User  
-# + middleName - middle name(s) of the User 
-# + honorificPrefix - title 
-# + honorificSuffix - suffix
+# Represents the sub-attributes of the name complex attribute in SCIMUser record.
+#
+# + formatted - Full name, including all middle names, titles, and suffixes as appropriate, formatted for display  
+# + givenName - Given name of the User  
+# + familyName - Family name of the User  
+# + middleName - Middle name(s) of the User 
+# + honorificPrefix - Title 
+# + honorificSuffix - Suffix
 public type Name record {
     string formatted?;
     string givenName?;
@@ -259,12 +290,14 @@ public type Name record {
     string honorificSuffix?;
 };
 
-# + idpType - identity provider type  
-# + isReadOnlyUser - whether the user is read only
-# + userSource - source of the user 
+# Represents the Custom Schema 
+#
+# + idpType - Identity provider type  
+# + isReadOnlyUser - Whether the user is read only
+# + userSource - Source of the user 
 # + photoUrl - URI of the user's photo  
-# + userAccountType - type of the user account  
-# + askPassword - whether the user is asked to provide a password
+# + userAccountType - Type of the user account  
+# + askPassword - Whether the user is asked to provide a password
 public type Custom record {
     string idpType;
     boolean|string isReadOnlyUser?;
@@ -274,6 +307,32 @@ public type Custom record {
     boolean askPassword?;
 };
 
+# Represents the response of updateUser operation.
+#
+# + schemas - URIs of the used SCIM schemas 
+# + id - Unique identifier by service provider
+# + externalId - Identifier by the provisioning client  
+# + userName - Unique identifier within the system
+# + name - Components of the user's name   
+# + displayName - Name displayed to end-users
+# + nickName - Casual name of the user  
+# + profileUrl - URI of the user's online profile   
+# + emails - Email addresses for the User 
+# + addresses - Physical mailing address for the user
+# + phoneNumbers - Phone numbers for the user  
+# + ims - Instant messaging addresses for the user  
+# + roles - List of roles for the user  
+# + photos - URI of image of the user  
+# + userType - Relationship between the organization and the user   
+# + title - Title of the user
+# + preferredLanguage - Preferred written or spoken languages of the user
+# + locale - Default location of the user  
+# + timezone - Time zone of the user  
+# + active - Administrative status of the user  
+# + groups - Groups to which the user belongs  
+# + x509Certificates - Certificates associated with the user  
+# + meta - Metadata of the user  
+# + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema
 public type UserUpdate record {
     string[]|string schemas?;
     string id?;
@@ -301,6 +360,31 @@ public type UserUpdate record {
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
 };
 
+# Represents the sub-attributes of value in userPatch operations attribute
+#
+# + schemas - URIs of the used SCIM schemas
+# + externalId - Identifier by the provisioning client  
+# + userName - Unique identifier within the system  
+# + name - Components of the user's name  
+# + displayName - Name displayed to end-users  
+# + nickName - Casual name of the user
+# + profileUrl - URI of the user's online profile
+# + emails - Email addresses for the User 
+# + addresses - Physical mailing address for the user 
+# + phoneNumbers - Phone numbers for the user  
+# + ims - Instant messaging addresses for the user 
+# + roles - List of roles for the user  
+# + photos - URI of image of the user 
+# + userType - Relationship between the organization and the user 
+# + title - Title of the user  
+# + preferredLanguage - Preferred written or spoken languages of the user  
+# + locale - Default location of the user  
+# + timezone - Time zone of the user 
+# + active - Administrative status of the user  
+# + groups - Groups to which the user belongs
+# + x509Certificates - Certificates associated with the user  
+# + meta - Metadata of the user  
+# + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema
 public type Value record {
     string[]|string schemas?;
     int externalId?;
@@ -327,26 +411,32 @@ public type Value record {
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
 };
 
-# + op - operation to be performed  
-# + value - values to be used for the operation
-public type PatchOp record {
+# Represents the sub-attributes of the operations in userPatch record.
+#
+# + op - Operation to be performed  
+# + value - Values to be used for the operation
+public type PatchOperations record {
     string op;
     Value value;
 };
 
+# Represents the request body of userPatch operation.
+#
 # + schemas - URIs of the used SCIM schemas  
-# + Operations - list of operations to be performed
+# + Operations - List of operations to be performed
 public type UserPatch record {
     string[] schemas;
-    PatchOp[] Operations;
+    PatchOperations[] Operations;
 };
 
+# Represents the request body of userSearch operation.
+#
 # + schemas - URIs of the used SCIM schemas  
-# + attributes - list of attributes to search for  
-# + filter - filter expression  
-# + domain - domain name  
-# + startIndex - starting index of the result set 
-# + count - number of results returned
+# + attributes - List of attributes to search for  
+# + filter - Filter expression  
+# + domain - Domain name  
+# + startIndex - Starting index of the result set 
+# + count - Number of results returned
 public type UserSearch record {
     string[] schemas;
     string[] attributes;

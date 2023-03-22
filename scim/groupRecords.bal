@@ -14,12 +14,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# + id - unique identifier by service provider  
+# Represents the SCIM Group resource schema
+#
+# + id - Unique identifier by service provider  
 # + schemas - URIs of the used SCIM schemas  
-# + displayName - name for the Group  
-# + members - list of members of the Group  
-# + meta - metadata of the group  
-# + roles - list of roles for the group
+# + displayName - Name for the Group  
+# + members - List of members of the Group  
+# + meta - Metadata of the group  
+# + roles - List of roles for the group
 public type SCIMGroup record {
     string id?;
     string[] schemas;
@@ -29,20 +31,24 @@ public type SCIMGroup record {
     Role roles?;
 };
 
-# + value - value of an "id" attribute of a SCIM resource  
-# + display - name used to display 
-# + \$ref - reference URI
+# Represents the sub-attributes of members attribute of SCIM Group resource schema 
+#
+# + value - Value of an "id" attribute of a SCIM resource  
+# + display - Name used to display 
+# + \$ref - Reference URI
 public type Member record {
     string value?;
     string display?;
     string \$ref?;
 };
 
-# + totalResults - total number of results  
-# + startIndex - starting index of the returned results  
-# + itemsPerPage - number of results returned per page  
-# + schemas - the list of schema URIs used  
-# + Resources - the list of group resources
+# Represents the response of by getGroups and searchGroup methods
+#
+# + totalResults - Total number of results  
+# + startIndex - Starting index of the returned results  
+# + itemsPerPage - Number of results returned per page  
+# + schemas - The list of schema URIs used  
+# + Resources - The list of group resources
 public type GroupResponse record {
     int totalResults?;
     int startIndex?;
@@ -51,11 +57,13 @@ public type GroupResponse record {
     GroupResource[] Resources?;
 };
 
-# + displayName - name for the Group  
-# + meta - metadata of the group
-# + members - list of members of the Group 
-# + roles - list of roles for the group 
-# + id - unique identifier by service provider
+# Represents the Response of createGroup and getGroup methods
+#
+# + displayName - Name for the Group  
+# + meta - Metadata of the group
+# + members - List of members of the Group 
+# + roles - List of roles for the group 
+# + id - Unique identifier by service provider
 public type GroupResource record {
     string displayName?;
     Meta meta;
@@ -65,10 +73,12 @@ public type GroupResource record {
 
 };
 
-# + displayName - name for the Group
-# + members - list of members of the Group 
-# + meta - metadata of the group  
-# + roles - list of roles for the group
+# Represents the Response of updateGroup method
+#
+# + displayName - Name for the Group
+# + members - List of members of the Group 
+# + meta - Metadata of the group  
+# + roles - List of roles for the group
 public type GroupUpdate record {
     string displayName;
     Member[] members?;
@@ -76,32 +86,40 @@ public type GroupUpdate record {
     Role roles?;
 };
 
+# Represents the Request body of patchGroup method
+#
 # + schemas - URIs of the used SCIM schemas  
-# + Operations - list of operations
+# + Operations - List of operations
 public type GroupPatch record {
     string[] schemas;
     PatchOpGroup[] Operations;
 };
 
-# + op - operation to be performed 
-# + value - value to be used for the operation
+# Represents the sub-attributes of Operations attribute of GroupPatch record
+#
+# + op - Operation to be performed 
+# + value - Value to be used for the operation
 public type PatchOpGroup record {
     string op;
     ValueGroup value;
 };
 
-# + members - list of members of the Group
-# + meta - metadata of the group 
-# + roles - list of roles for the group
+# Represents the sub-attributes of value attribute of PatchOpGroup record
+#
+# + members - List of members of the Group
+# + meta - Metadata of the group 
+# + roles - List of roles for the group
 public type ValueGroup record {
     Member[] members?;
     Meta meta?;
     Role roles?;
 };
 
+# Represents the Request body of searchGroup method
+#
 # + schemas - URIs of the used SCIM schemas  
-# + filter - filter expression 
-# + startIndex - starting index of the returned results
+# + filter - Filter expression 
+# + startIndex - Starting index of the returned results
 public type GroupSearch record {
     string[] schemas;
     string filter;

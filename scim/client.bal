@@ -31,7 +31,7 @@ public class Client {
     # + orgName - The name of the organization
     # + clientId - The client ID of the application
     # + clientSecret - The client secret of the application
-    # + scope - permitted scopes
+    # + scope - Permitted scopes
     public isolated function init(string orgName, string clientId, string clientSecret, string[] scope) returns error? {
         self.orgName = orgName;
         self.clientId = clientId;
