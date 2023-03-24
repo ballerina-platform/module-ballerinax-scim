@@ -29,66 +29,59 @@ public type Bulk record {
 #
 # + method - HTTP method of the current operation ["POST", "PUT", "PATCH", or "DELETE"]
 # + path - Path of the operation 
-# + bulkId - BulkId of the operation 
-# + data - Data of the operation
-# + version - Current resource version
+# + bulkId - BulkId of the operation (required when the method is "POST" )
+# + version - Current resource version (used when method is "PUT", "PATCH", or "DELETE")
+# + data - Data of the operation (not an attribute when method is "DELETE")
+# - method "POST" --->  SCIMUser/SCIMGroup
+# - method "PUT" --->  UserUpdate/GroupUpdate
+# - method "PATCH" --->  BulkPatch 
+# - method "DELETE" --->  (No data attribute)         
 public type Operation record {
     string method;
     string path;
     string bulkId?;
     string 'version?;
-    SCIMUser|BulkUserUpdate|BulkUserReplace|SCIMGroup|BulkGroupUpdate|BulkGroupReplace data?;
+    SCIMUser|SCIMGroup|BulkPatch data?;
 };
 
-# Represents the BulkUserReplace reponse's data field attributes under the Operation record
+# Represents the Bulk request body, data attibute of PATCH method
+#
+# + Operations - List of operations within the bulk patch request
+public type BulkPatch record {
+    BulkPatchOperation[] Operations;
+};
+
+# Represents the Bulk request's data field attributes under the Operation record
+#
+# + op - Operation to be performed  
+# + path - Path of the existing users/groups
+# + value - Value to be updated
+public type BulkPatchOperation record {
+    string op;
+    string path?;
+    json|string|boolean|decimal|int value?;
+};
+
+# Represents the response of the Bulk operations
 #
 # + schemas - URIs of the SCIM schemas used
-# + username - Username of the user 
-# + name - Name of the user
-public type BulkUserReplace record {
+# + Operations - List of operations
+public type BulkResponse record {
     string[] schemas;
-    string username;
-    Name name;
+    BulkResponseOperation[] Operations;
 };
 
-# Represents the BulkUserUpdate reponse's data field attributes under the Operation record
+# Represents the sub-attributes of the Operations attribute of the BulkResponse record
 #
-# + op - Operation to be performed  
-# + path - Path of the existing users
-# + value - Value to be updated
-public type BulkUserUpdate record {
-    string op;
-    string path;
-    string value;
-};
-
-# Represents the BulkGroupReplace reponse's data field attributes under the Operation record
-#
-# + displayName - Display name of the group  
-# + members - Members of the group
-public type BulkGroupReplace record {
-    string displayName;
-    MemberReplace[] members;
-};
-
-# Represents the sub-attributes of the members attribute of the BulkGroupReplace record
-#
-# + value - Id of the member
-# + display - Username of the member
-public type MemberReplace record {
-    string value;
-    string display;
-};
-
-# Represents the BulkGroupUpdate reponse's data field attributes under the Operation record
-#
-# + op - Operation to be performed  
-# + path - Path of the existing user group  
-# + value - Value to be updated
-public type BulkGroupUpdate record {
-    string op;
-    string path;
-    json[] value;
+# + method - Method of the operation  
+# + location - Resource endpoint URL 
+# + bulkId - BulkId of the operation  
+# + status - Http status code of the operation
+public type BulkResponseOperation record {
+    string method;
+    string location?;
+    string bulkId;
+    Status status;
 };
 
 # Represents the sub-attributes of the status attribute of the OperationResponse record
@@ -98,35 +91,3 @@ public type Status record {
     int code;
 };
 
-# Represents the sub-attributes of the response of the OperationResponse record
-#
-# + schemas - URIs of the SCIM schemas used
-public type OpResponse record {
-    string[] schemas;
-};
-
-# Represents the response of the Bulk operations
-#
-# + schemas - URIs of the SCIM schemas used
-# + Operations - List of operations
-public type BulkResponse record {
-    string[] schemas;
-    OperationResponse[] Operations;
-};
-
-# Represents the sub-attributes of the Operations attribute of the BulkResponse record
-#
-# + method - Method of the operation  
-# + location - Location stored 
-# + bulkId - BulkId of the operation  
-# + status - Http status code of the operation
-# + detail - Details of the operation  
-# + response - Response of the operation
-public type OperationResponse record {
-    string method;
-    string location?;
-    string bulkId;
-    Status status;
-    string detail?;
-    OpResponse|string response?;
-};

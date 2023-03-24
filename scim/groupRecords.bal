@@ -14,16 +14,29 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Represents the SCIM Group resource schema
+# Represents the SCIM Group schema
 #
-# + id - Unique identifier by service provider  
+# + schemas - The list of schema URIs used
+# + displayName - Name for the Group
+# + members - List of members of the Group 
+# + meta - Metadata of the group  
+# + roles - List of roles for the group
+public type SCIMGroup record {
+    string[] schemas?;
+    string displayName;
+    Member[] members?;
+    Meta meta?;
+    Role roles?;
+};
+
+# Represents the SCIM Group resource request body used for createGroup
+#
 # + schemas - URIs of the used SCIM schemas  
 # + displayName - Name for the Group  
 # + members - List of members of the Group  
 # + meta - Metadata of the group  
 # + roles - List of roles for the group
-public type SCIMGroup record {
-    string id?;
+public type GroupCreate record {
     string[] schemas;
     string displayName;
     Member[] members?;
@@ -64,23 +77,26 @@ public type GroupResponse record {
 # + members - List of members of the Group 
 # + roles - List of roles for the group 
 # + id - Unique identifier by service provider
+# + schemas - The list of schema URIs used
 public type GroupResource record {
     string displayName?;
     Meta meta;
     Member[] members?;
     Role[] roles?;
     string id?;
-
+    string[] schemas?;
 };
 
 # Represents the Response of updateGroup method
 #
+# + schemas - The list of schema URIs used
 # + displayName - Name for the Group
 # + members - List of members of the Group 
 # + meta - Metadata of the group  
 # + roles - List of roles for the group
 public type GroupUpdate record {
-    string displayName;
+    string[] schemas?;
+    string displayName?;
     Member[] members?;
     Meta meta?;
     Role roles?;
@@ -101,18 +117,7 @@ public type GroupPatch record {
 # + value - Value to be used for the operation
 public type PatchOpGroup record {
     string op;
-    ValueGroup value;
-};
-
-# Represents the sub-attributes of value attribute of PatchOpGroup record
-#
-# + members - List of members of the Group
-# + meta - Metadata of the group 
-# + roles - List of roles for the group
-public type ValueGroup record {
-    Member[] members?;
-    Meta meta?;
-    Role roles?;
+    GroupUpdate value;
 };
 
 # Represents the Request body of searchGroup method

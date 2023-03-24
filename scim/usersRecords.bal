@@ -14,10 +14,64 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Represents the SCIM User resource.
+# Represents the SCIM USER schema.
 #
 # + schemas - URIs of the used SCIM schemas  
-# + id - Unique identifier by service provider  
+# + externalId - Identifier by the provisioning client  
+# + userName - Unique identifier within the system  
+# + name - Components of the user's name  
+# + displayName - Name displayed to end-users  
+# + nickName - Casual name of the user  
+# + profileUrl - URI of the user's online profile  
+# + emails - Email addresses for the User  
+# + addresses - Physical mailing address for the user  
+# + phoneNumbers - Phone numbers for the user  
+# + ims - Instant messaging addresses for the user  
+# + roles - List of roles for the user  
+# + photos - URI of image of the user  
+# + userType - Relationship between the organization and the user  
+# + title - Title of the user  
+# + preferredLanguage - Preferred written or spoken languages of the user  
+# + locale - Default location of the user  
+# + timezone - Time zone of the user  
+# + active - Administrative status of the user  
+# + password - Password of the user  
+# + groups - Groups to which the user belongs  
+# + x509Certificates - Certificates associated with the user  
+# + meta - Metadata of the user  
+# + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema  
+# + urn\:scim\:wso2\:schema - Attributes belong to WSO2 custom extension schema
+public type SCIMUser record {
+    string[]|string schemas?;
+    int externalId?;
+    string userName?;
+    Name name?;
+    string displayName?;
+    string nickName?;
+    string profileUrl?;
+    Email[] emails?;
+    Address[] addresses?;
+    Phone[] phoneNumbers?;
+    Ims[] ims?;
+    Role[] roles?;
+    Photo[] photos?;
+    string userType?;
+    string title?;
+    string preferredLanguage?;
+    string locale?;
+    string timezone?;
+    boolean active?;
+    string password?;
+    Group[] groups?;
+    Certificate[] x509Certificates?;
+    Meta meta?;
+    SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
+    Custom urn\:scim\:wso2\:schema?;
+};
+
+# Represents the SCIM User resource request body used for createUser.
+#
+# + schemas - URIs of the used SCIM schemas    
 # + externalId - Identifier by the provisioning client  
 # + userName - Unique identifier within the system  
 # + name - Components of the user's name  
@@ -41,9 +95,9 @@
 # + x509Certificates - Certificates associated with the user 
 # + meta - Metadata of the user  
 # + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema
-public type SCIMUser record {
+# + urn\:scim\:wso2\:schema - Attributes belong to WSO2 extension schema
+public type UserCreate record {
     string[]|string schemas?;
-    string id?;
     int externalId?;
     string userName?;
     Name name?;
@@ -67,7 +121,7 @@ public type SCIMUser record {
     Certificate[] x509Certificates?;
     Meta meta?;
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
-
+    Custom urn\:scim\:wso2\:schema?;
 };
 
 # Represents the SCIM Enterprise User extensioon resource.
@@ -227,7 +281,7 @@ public type ErrorResponse record {
 public type UserResource record {
     string[]|string schemas?;
     string id?;
-    int|string externalId?;
+    string externalId?;
     string userName?;
     Name name?;
     string displayName?;
@@ -299,7 +353,7 @@ public type Name record {
 # + userAccountType - Type of the user account  
 # + askPassword - Whether the user is asked to provide a password
 public type Custom record {
-    string idpType;
+    string idpType?;
     boolean|string isReadOnlyUser?;
     string userSource?;
     string photoUrl?;
@@ -307,10 +361,9 @@ public type Custom record {
     boolean askPassword?;
 };
 
-# Represents the response of updateUser operation.
+# Represents the request of updateUser operation.
 #
 # + schemas - URIs of the used SCIM schemas 
-# + id - Unique identifier by service provider
 # + externalId - Identifier by the provisioning client  
 # + userName - Unique identifier within the system
 # + name - Components of the user's name   
@@ -334,58 +387,6 @@ public type Custom record {
 # + meta - Metadata of the user  
 # + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema
 public type UserUpdate record {
-    string[]|string schemas?;
-    string id?;
-    int externalId?;
-    string userName?;
-    Name name?;
-    string displayName?;
-    string nickName?;
-    string profileUrl?;
-    Email[] emails?;
-    Address[] addresses?;
-    Phone[] phoneNumbers?;
-    Ims[] ims?;
-    Role[] roles?;
-    Photo[] photos?;
-    string userType?;
-    string title?;
-    string preferredLanguage?;
-    string locale?;
-    string timezone?;
-    boolean active?;
-    Group[] groups?;
-    Certificate[] x509Certificates?;
-    Meta meta?;
-    SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
-};
-
-# Represents the sub-attributes of value in userPatch operations attribute
-#
-# + schemas - URIs of the used SCIM schemas
-# + externalId - Identifier by the provisioning client  
-# + userName - Unique identifier within the system  
-# + name - Components of the user's name  
-# + displayName - Name displayed to end-users  
-# + nickName - Casual name of the user
-# + profileUrl - URI of the user's online profile
-# + emails - Email addresses for the User 
-# + addresses - Physical mailing address for the user 
-# + phoneNumbers - Phone numbers for the user  
-# + ims - Instant messaging addresses for the user 
-# + roles - List of roles for the user  
-# + photos - URI of image of the user 
-# + userType - Relationship between the organization and the user 
-# + title - Title of the user  
-# + preferredLanguage - Preferred written or spoken languages of the user  
-# + locale - Default location of the user  
-# + timezone - Time zone of the user 
-# + active - Administrative status of the user  
-# + groups - Groups to which the user belongs
-# + x509Certificates - Certificates associated with the user  
-# + meta - Metadata of the user  
-# + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema
-public type Value record {
     string[]|string schemas?;
     int externalId?;
     string userName?;
@@ -417,7 +418,7 @@ public type Value record {
 # + value - Values to be used for the operation
 public type PatchOperations record {
     string op;
-    Value value;
+    UserUpdate value;
 };
 
 # Represents the request body of userPatch operation.

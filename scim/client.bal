@@ -70,7 +70,7 @@ public class Client {
     # + data - The user data
     # + return - The created user
     @display {label: "Create User"}
-    public isolated function createUser(@display {label: "User data"} SCIMUser data) returns UserResource|error {
+    public isolated function createUser(@display {label: "User data"} UserCreate data) returns UserResource|error {
         UserResource response = check self.clientEndpoint->post(USERS, data);
         return response;
     }
@@ -141,7 +141,7 @@ public class Client {
     # + data - The group data
     # + return - The created group
     @display {label: "Create Group"}
-    public isolated function createGroup(@display {label: "Group Data"} SCIMGroup data) returns GroupResource|error {
+    public isolated function createGroup(@display {label: "Group Data"} GroupCreate data) returns GroupResource|error {
         GroupResource response = check self.clientEndpoint->post(GROUPS, data);
         return response;
     }
@@ -188,7 +188,7 @@ public class Client {
         return response;
     }
 
-    # Gets the list of service providers.
+    # Performs a bulk operation.
     #
     # + data - The data for bulk operation
     # + return - The response of the operation
