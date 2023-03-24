@@ -74,14 +74,17 @@ public type BulkResponse record {
 # Represents the sub-attributes of the Operations attribute of the BulkResponse record
 #
 # + method - Method of the operation  
-# + location - Resource endpoint URL 
-# + bulkId - BulkId of the operation  
-# + status - Http status code of the operation
+# + location - Resource endpoint URL  
+# + bulkId - BulkId of the operation (Found in the response only when the method is "POST")  
+# + status - Http status code of the operation 
+# + 'version - Current resource version (Found in the response only when the method is "POST", "PUT" and "PATCH")
 public type BulkResponseOperation record {
     string method;
     string location?;
-    string bulkId;
+    string bulkId?;
     Status status;
+    string 'version?;
+
 };
 
 # Represents the sub-attributes of the status attribute of the OperationResponse record
