@@ -434,15 +434,21 @@ public type UserPatch record {
 #
 # + schemas - URIs of the used SCIM schemas  
 # + attributes - List of attributes to search for  
+# + excludedAttributes - Names of resource attributes to be removed from the default set of attributes to return
 # + filter - Filter expression  
 # + domain - Domain name  
-# + startIndex - Starting index of the result set 
-# + count - Number of results returned
+# + startIndex - Starting index of the result set  
+# + count - Number of results returned  
+# + sortBy - Attribute used to order the returned responses  
+# + sortOrder - order in which the sortBy parameter is applied
 public type UserSearch record {
     string[] schemas;
-    string[] attributes;
-    string filter;
+    string[] attributes?;
+    string[] excludedAttributes?;
+    string filter?;
     string domain?;
     int startIndex?;
     int count?;
+    string sortBy?;
+    string sortOrder?;
 };

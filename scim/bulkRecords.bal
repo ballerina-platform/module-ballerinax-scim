@@ -84,7 +84,6 @@ public type BulkResponseOperation record {
     string bulkId?;
     Status status;
     string 'version?;
-
 };
 
 # Represents the sub-attributes of the status attribute of the OperationResponse record
@@ -93,4 +92,3 @@ public type BulkResponseOperation record {
 public type Status record {
     int code;
 };
-

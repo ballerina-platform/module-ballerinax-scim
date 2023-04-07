@@ -14,3 +14,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
+# Represents the connector configurations
+#
+# + orgName - The name of the organization
+# + clientId - The client ID of the application
+# + clientSecret - The client secret of the application
+# + scope - Permitted scopes
+public type ConnectorConfig record {
+    string orgName;
+    string clientId;
+    string clientSecret;
+    string[] scope;
+};

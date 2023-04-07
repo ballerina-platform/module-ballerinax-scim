@@ -18,32 +18,20 @@ import ballerina/http;
 
 # This client is used to connect to the SCIM2 APIs of Asgardeo for Inbound User Provisioning.
 @display {label: "SCIM Client Connector"}
-public class Client {
-    private final string orgName;
-    private final string clientId;
-    private final string clientSecret;
-    private final string[] scope;
-    // final oauth2:ClientOAuth2Provider provider;
+public client class Client {
     final http:Client clientEndpoint;
 
     # Initializes the SCIM client.
     #
-    # + orgName - The name of the organization
-    # + clientId - The client ID of the application
-    # + clientSecret - The client secret of the application
-    # + scope - Permitted scopes
-    public isolated function init(string orgName, string clientId, string clientSecret, string[] scope) returns error? {
-        self.orgName = orgName;
-        self.clientId = clientId;
-        self.clientSecret = clientSecret;
-        self.scope = scope;
+    # + connectorConfig - The connector configuration
+    public isolated function init(ConnectorConfig connectorConfig) returns error? {
         http:OAuth2ClientCredentialsGrantConfig config = {
-            tokenUrl: string `${HOST_URL}/${TENANT_PATH}/${self.orgName}/oauth2/token`,
-            clientId: clientId,
-            clientSecret: clientSecret,
-            scopes: scope
+            tokenUrl: string `${HOST_URL}/${TENANT_PATH}/${connectorConfig.orgName}/oauth2/token`,
+            clientId: connectorConfig.clientId,
+            clientSecret: connectorConfig.clientSecret,
+            scopes: connectorConfig.scope
         };
-        self.clientEndpoint = check new (string `${HOST_URL}/${TENANT_PATH}/${self.orgName}/${SCIM}`, {auth: config, httpVersion: "1.1"});
+        self.clientEndpoint = check new (string `${HOST_URL}/${TENANT_PATH}/${connectorConfig.orgName}/${SCIM}`, {auth: config, httpVersion: "1.1"});
     }
 
     # Gets the list of users.

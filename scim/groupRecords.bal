@@ -122,11 +122,23 @@ public type PatchOpGroup record {
 
 # Represents the Request body of searchGroup method
 #
+# + attributes - Names of resource attributes to return  
+# + excludedAttributes - Names of resource attributes to be removed from the default set of attributes to return  
+# + sortBy - Attribute used to order the returned responses  
+# + sortOrder - order in which the sortBy parameter is applied  
 # + schemas - URIs of the used SCIM schemas  
-# + filter - Filter expression 
-# + startIndex - Starting index of the returned results
+# + filter - Filter expression  
+# + startIndex - Starting index of the first query results  
+# + count - Maximum number of query results per page  
+# + domain - Domain name
 public type GroupSearch record {
+    string[] attributes?;
+    string[] excludedAttributes?;
+    string sortBy?;
+    string sortOrder?;
     string[] schemas;
-    string filter;
+    string filter?;
     int startIndex?;
+    int count?;
+    string domain?;
 };
