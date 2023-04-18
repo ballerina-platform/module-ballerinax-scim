@@ -14,3 +14,56 @@
 // specific language governing permissions and limitations
 // under the License.
 
+public enum emailType {
+    work,
+    home,
+    other
+}
+
+public enum phoneType {
+    work,
+    home,
+    mobile,
+    fax,
+    pager,
+    other
+}
+
+public enum imsType {
+    aim,
+    gtalk,
+    icq,
+    xmpp,
+    msn,
+    skype,
+    qq,
+    yahoo
+}
+
+public enum photoType {
+    photo,
+    thumbnail
+}
+
+public enum addressType {
+    work,
+    home,
+    other
+}
+
+public enum groupType {
+    direct,
+    indirect
+}
+
+public enum memberType {
+    User,
+    Group
+}
+
+public enum opType {
+    add,
+    replace,
+    remove
+}
+

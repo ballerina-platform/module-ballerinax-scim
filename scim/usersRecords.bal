@@ -26,6 +26,7 @@
 # + emails - Email addresses for the User  
 # + addresses - Physical mailing address for the user  
 # + phoneNumbers - Phone numbers for the user  
+# + entitlements - Entitlements for the User that represent a thing the User has  
 # + ims - Instant messaging addresses for the user  
 # + roles - List of roles for the user  
 # + photos - URI of image of the user  
@@ -42,8 +43,8 @@
 # + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema  
 # + urn\:scim\:wso2\:schema - Attributes belong to WSO2 custom extension schema
 public type SCIMUser record {
-    string[]|string schemas?;
-    int externalId?;
+    string[] schemas?;
+    string externalId?;
     string userName?;
     Name name?;
     string displayName?;
@@ -52,6 +53,7 @@ public type SCIMUser record {
     Email[] emails?;
     Address[] addresses?;
     Phone[] phoneNumbers?;
+    Entitlement[] entitlements?;
     Ims[] ims?;
     Role[] roles?;
     Photo[] photos?;
@@ -62,7 +64,7 @@ public type SCIMUser record {
     string timezone?;
     boolean active?;
     string password?;
-    Group[] groups?;
+    Groups[] groups?;
     Certificate[] x509Certificates?;
     Meta meta?;
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
@@ -71,34 +73,35 @@ public type SCIMUser record {
 
 # Represents the SCIM User resource request body used for createUser.
 #
-# + schemas - URIs of the used SCIM schemas    
+# + schemas - URIs of the used SCIM schemas  
 # + externalId - Identifier by the provisioning client  
 # + userName - Unique identifier within the system  
 # + name - Components of the user's name  
 # + displayName - Name displayed to end-users  
-# + nickName - Casual name of the user 
+# + nickName - Casual name of the user  
 # + profileUrl - URI of the user's online profile  
-# + emails - Email addresses for the User 
+# + emails - Email addresses for the User  
 # + addresses - Physical mailing address for the user  
 # + phoneNumbers - Phone numbers for the user  
 # + ims - Instant messaging address for the user  
 # + roles - List of roles for the user  
 # + photos - URI of image of the user  
+# + entitlements - Entitlements for the User that represent a thing the User has  
 # + userType - Relationship between the organization and the user  
-# + title - Title of the user
-# + preferredLanguage - Preferred written or spoken languages of the user
-# + locale - Default location of the user
-# + timezone - Time zone of the user
-# + active - Administrative status of the user 
-# + password - Password of the user
+# + title - Title of the user  
+# + preferredLanguage - Preferred written or spoken languages of the user  
+# + locale - Default location of the user  
+# + timezone - Time zone of the user  
+# + active - Administrative status of the user  
+# + password - Password of the user  
 # + groups - Groups to which the user belongs  
-# + x509Certificates - Certificates associated with the user 
+# + x509Certificates - Certificates associated with the user  
 # + meta - Metadata of the user  
-# + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema
+# + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema  
 # + urn\:scim\:wso2\:schema - Attributes belong to WSO2 extension schema
 public type UserCreate record {
     string[]|string schemas?;
-    int externalId?;
+    string externalId?;
     string userName?;
     Name name?;
     string displayName?;
@@ -110,6 +113,7 @@ public type UserCreate record {
     Ims[] ims?;
     Role[] roles?;
     Photo[] photos?;
+    Entitlement[] entitlements?;
     string userType?;
     string title?;
     string preferredLanguage?;
@@ -117,7 +121,7 @@ public type UserCreate record {
     string timezone?;
     boolean active?;
     string password;
-    Group[] groups?;
+    Groups[] groups?;
     Certificate[] x509Certificates?;
     Meta meta?;
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
@@ -132,15 +136,13 @@ public type UserCreate record {
 # + division - Name of a division  
 # + department - Name of a department  
 # + manager - Manager of the user  
-# + verifyEmail - Email address has been verified or not
 public type SCIMEnterpriseUser record {
     string employeeNumber?;
-    int costCenter?;
+    string costCenter?;
     string organization?;
     string division?;
     string department?;
     Manager manager?;
-    boolean verifyEmail?;
 };
 
 # Represents the sub-attributes of the manager attribute in the SCIMEnterpriseUser record.
@@ -157,11 +159,13 @@ public type Manager record {
 # Represents the sub-attributes of the emails complex attribute in SCIMUser record.
 #
 # + value - Canonicalized representation of the email value  
-# + 'type - Email classification  
+# + display - Name primarily used for display purposes
+# + 'type - Type of the email
 # + primary - Whether the primary email address
 public type Email record {
     string value?;
-    string 'type?;
+    string display?;
+    emailType 'type?;
     boolean primary?;
 };
 
@@ -176,11 +180,11 @@ public type Email record {
 # + formatted - Full mailing address  
 # + primary - Whether the primary address
 public type Address record {
-    string 'type;
-    string streetAddress;
-    string locality;
-    string region;
-    string postalCode;
+    addressType 'type?;
+    string streetAddress?;
+    string locality?;
+    string region?;
+    string postalCode?;
     string country?;
     string formatted?;
     boolean primary?;
@@ -189,45 +193,79 @@ public type Address record {
 # Represents the sub-attributes of the phoneNumbers complex attribute in SCIMUser record.
 #
 # + value - Phonenumber in accordance with the format defined  
-# + 'type - Type of the phonenumber
+# + 'type - Type of the phone number  
+# + display - Name used for display purposes  
+# + primary - Whether the primary phone number
 public type Phone record {
-    string value;
-    string 'type;
+    string value?;
+    phoneType 'type?;
+    string display?;
+    boolean primary?;
 };
 
 # Represents the sub-attributes of the ims complex attribute in SCIMUser record.
 #
 # + value - Instant messaging address  
-# + 'type - Type of the instant messaging address
+# + 'type - Type of the IM address
+# + display - Name primarily used for display purposes  
+# + primary - Whether the primary IM address
 public type Ims record {
-    string value;
-    string 'type;
+    string value?;
+    imsType 'type?;
+    string display?;
+    boolean primary?;
 };
 
 # Represents the sub-attributes of the photos complex attribute in SCIMUser record.
 #
-# + value - URI of the photo
-# + 'type - Photo size value
+# + value - URI of the photo  
+# + 'type - Type of the photo 
+# + display - Name primarily used for display purposes
+# + primary - Whether the primary photo
 public type Photo record {
-    string value;
-    string 'type;
+    string value?;
+    photoType 'type?;
+    string display?;
+    boolean primary?;
 };
 
 # Represents the sub-attributes of the groups complex attribute in SCIMUser record.
+#
 # + value - Id of the group  
 # + display - Name of the group  
-# + \$ref - Reference URI 
-public type Group record {
-    string value;
-    string display;
-    string \$ref;
+# + \$ref - Reference URI  
+# + 'type - Type of the group
+public type Groups record {
+    string value?;
+    string display?;
+    string \$ref?;
+    groupType 'type?;
+};
+
+# Represents the sub-attributes of the entitlements complex attribute in SCIMUser record.
+#
+# + value - The value of an entitlement  
+# + display - The display name of the entitlement  
+# + primary - Whether the entitlement is the primary one 
+# + 'type - The type of the entitlement
+public type Entitlement record {
+    string value?;
+    string display?;
+    string primary?;
+    string 'type?;
 };
 
 # Represents the sub-attributes of the certificates complex attribute in SCIMUser record.
 #
-# + value - DER-encoded X.509 certificate
+# + value - DER-encoded X.509 certificate  
+# + display - Display name of the certificate  
+# + 'type - Type of the certificate
+# + primary - Whether the certificate is the primary one
 public type Certificate record {
-    string value;
+    string value?;
+    string display?;
+    string 'type?;
+    boolean primary?;
 };
 
 # Represents the response of the getUsers and searchUser operations.
@@ -260,21 +298,22 @@ public type ErrorResponse record {
 
 # Represents the response of the createUser and getUser operations.
 #
-# + schemas - URIs of the used SCIM schemas
+# + schemas - URIs of the used SCIM schemas  
 # + id - Unique identifier by service provider  
-# + externalId - Identifier by the provisioning client   
-# + userName - Unique identifier for the user 
+# + externalId - Identifier by the provisioning client  
+# + userName - Unique identifier for the user  
 # + name - Name of the user  
-# + displayName - Name displayed to end-users
+# + displayName - Name displayed to end-users  
 # + nickName - Casual name of the user  
 # + profileUrl - URI of the user's online profile  
 # + emails - Email addresses for the User  
 # + addresses - Physical mailing address for the user  
 # + phoneNumbers - Phone numbers for the user  
 # + photos - URI of image of the user  
+# + entitlements - List of entitlements for the user  
 # + locale - Default location of the user  
-# + active - Administrative status of the user 
-# + meta - Metadata of the user 
+# + active - Administrative status of the user  
+# + meta - Metadata of the user  
 # + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema  
 # + urn\:scim\:wso2\:schema - Attributes belong to WSO2 custom extension schema  
 # + roles - List of roles for the user
@@ -291,40 +330,13 @@ public type UserResource record {
     Address[] addresses?;
     Phone[] phoneNumbers?;
     Photo[] photos?;
+    Entitlement[] entitlements?;
     string locale?;
     boolean active?;
     Meta meta;
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
     Custom urn\:scim\:wso2\:schema?;
     Role[] roles?;
-};
-
-# Represents the sub-attributes of the roles complex attribute in SCIMUser record.
-#
-# + display - Human readable name, primarily used for display purposes
-# + value - Label representing a collection of entitlements  
-# + \$ref - Reference URI 
-# + resourceType - Resource type of the entitlement
-public type Role record {
-    string display;
-    string value?;
-    string \$ref?;
-    string resourceType?;
-};
-
-# Represents the sub-attributes of the meta complex attribute in SCIMUser record.
-#
-# + created - DateTime that the resource was added 
-# + location - URI of the resource being returned 
-# + lastModified - Most recent DateTime that the details of this resource were updated  
-# + resourceType - Name of the resource type of the resource  
-# + 'version - Version of the resource being returned
-public type Meta record {
-    string created;
-    string location;
-    string lastModified;
-    string resourceType?;
-    string 'version?;
 };
 
 # Represents the sub-attributes of the name complex attribute in SCIMUser record.
@@ -363,22 +375,23 @@ public type Custom record {
 
 # Represents the request of updateUser operation.
 #
-# + schemas - URIs of the used SCIM schemas 
+# + schemas - URIs of the used SCIM schemas  
 # + externalId - Identifier by the provisioning client  
-# + userName - Unique identifier within the system
-# + name - Components of the user's name   
-# + displayName - Name displayed to end-users
+# + userName - Unique identifier within the system  
+# + name - Components of the user's name  
+# + displayName - Name displayed to end-users  
 # + nickName - Casual name of the user  
-# + profileUrl - URI of the user's online profile   
-# + emails - Email addresses for the User 
-# + addresses - Physical mailing address for the user
+# + profileUrl - URI of the user's online profile  
+# + emails - Email addresses for the User  
+# + addresses - Physical mailing address for the user  
 # + phoneNumbers - Phone numbers for the user  
 # + ims - Instant messaging addresses for the user  
 # + roles - List of roles for the user  
 # + photos - URI of image of the user  
-# + userType - Relationship between the organization and the user   
-# + title - Title of the user
-# + preferredLanguage - Preferred written or spoken languages of the user
+# + entitlements - List of entitlements for the user
+# + userType - Relationship between the organization and the user  
+# + title - Title of the user  
+# + preferredLanguage - Preferred written or spoken languages of the user  
 # + locale - Default location of the user  
 # + timezone - Time zone of the user  
 # + active - Administrative status of the user  
@@ -388,7 +401,7 @@ public type Custom record {
 # + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema
 public type UserUpdate record {
     string[]|string schemas?;
-    int externalId?;
+    string externalId?;
     string userName?;
     Name name?;
     string displayName?;
@@ -400,13 +413,14 @@ public type UserUpdate record {
     Ims[] ims?;
     Role[] roles?;
     Photo[] photos?;
+    Entitlement[] entitlements?;
     string userType?;
     string title?;
     string preferredLanguage?;
     string locale?;
     string timezone?;
     boolean active?;
-    Group[] groups?;
+    Groups[] groups?;
     Certificate[] x509Certificates?;
     Meta meta?;
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
@@ -415,9 +429,11 @@ public type UserUpdate record {
 # Represents the sub-attributes of the operations in userPatch record.
 #
 # + op - Operation to be performed  
+# + path - Target of the operation
 # + value - Values to be used for the operation
 public type PatchOperations record {
-    string op;
+    opType op;
+    string path?;
     UserUpdate value;
 };
 

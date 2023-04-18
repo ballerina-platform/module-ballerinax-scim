@@ -21,12 +21,14 @@
 # + members - List of members of the Group 
 # + meta - Metadata of the group  
 # + roles - List of roles for the group
+# + externalId - Identifier by the provisioning client  
 public type SCIMGroup record {
     string[] schemas?;
     string displayName;
     Member[] members?;
     Meta meta?;
     Role roles?;
+    string externalId?;
 };
 
 # Represents the SCIM Group resource request body used for createGroup
@@ -36,23 +38,27 @@ public type SCIMGroup record {
 # + members - List of members of the Group  
 # + meta - Metadata of the group  
 # + roles - List of roles for the group
+# + externalId - Identifier by the provisioning client  
 public type GroupCreate record {
     string[] schemas;
     string displayName;
     Member[] members?;
     Meta meta?;
     Role roles?;
+    string externalId?;
 };
 
-# Represents the sub-attributes of members attribute of SCIM Group resource schema 
+# Represents the sub-attributes of members attribute of SCIM Group resource schema
 #
 # + value - Value of an "id" attribute of a SCIM resource  
-# + display - Name used to display 
-# + \$ref - Reference URI
+# + display - Name used to display  
+# + \$ref - Reference URI  
+# + 'type - Type of the member
 public type Member record {
     string value?;
     string display?;
     string \$ref?;
+    memberType 'type?;
 };
 
 # Represents the response of by getGroups and searchGroup methods
@@ -78,6 +84,7 @@ public type GroupResponse record {
 # + roles - List of roles for the group 
 # + id - Unique identifier by service provider
 # + schemas - The list of schema URIs used
+# + externalId - Identifier by the provisioning client  
 public type GroupResource record {
     string displayName?;
     Meta meta;
@@ -85,6 +92,7 @@ public type GroupResource record {
     Role[] roles?;
     string id?;
     string[] schemas?;
+    string externalId?;
 };
 
 # Represents the Response of updateGroup method
@@ -94,12 +102,14 @@ public type GroupResource record {
 # + members - List of members of the Group 
 # + meta - Metadata of the group  
 # + roles - List of roles for the group
+# + externalId - Identifier by the provisioning client  
 public type GroupUpdate record {
     string[] schemas?;
     string displayName?;
     Member[] members?;
     Meta meta?;
     Role roles?;
+    string externalId?;
 };
 
 # Represents the Request body of patchGroup method
@@ -113,10 +123,12 @@ public type GroupPatch record {
 
 # Represents the sub-attributes of Operations attribute of GroupPatch record
 #
-# + op - Operation to be performed 
+# + op - Operation to be performed  
+# + path - Target of the operation
 # + value - Value to be used for the operation
 public type PatchOpGroup record {
-    string op;
+    opType op;
+    string path?;
     GroupUpdate value;
 };
 
