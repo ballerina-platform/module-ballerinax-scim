@@ -87,7 +87,7 @@ public type GroupResponse record {
 # + externalId - Identifier by the provisioning client  
 public type GroupResource record {
     string displayName?;
-    Meta meta;
+    Meta meta?;
     Member[] members?;
     Role[] roles?;
     string id?;

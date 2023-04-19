@@ -34,22 +34,38 @@ public client class Client {
         self.clientEndpoint = check new (string `${HOST_URL}/${TENANT_PATH}/${connectorConfig.orgName}/${SCIM}`, {auth: config, httpVersion: "1.1"});
     }
 
-    # Gets the list of users.
+    # Filter the users.
     #
+    # + attributes - SCIM defined attributes parameter  
+    # + count - Specifies the desired maximum number of query results per page  
+    # + domain - The name of the user store where filtering needs to be applied  
+    # + excludedAttributes - SCIM defined excludedAttribute parameter  
+    # + filter - Filter expression for filtering  
+    # + startIndex - The 1-based index of the first query result
     # + return - The list of users
     @display {label: "Get Users"}
-    public isolated function getUsers() returns UserResponse|error {
-        UserResponse response = check self.clientEndpoint->get(USERS);
+    public isolated function getUsers(string[]? attributes = (), int? count = (), string? domain = (), string[]? excludedAttributes = (), string? filter = (), int? startIndex = ()) returns UserResponse|error {
+        string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
+        string cnt = count is () ? "count" : string `count=${count}`;
+        string dom = domain is () ? "domain" : string `domain=${domain}`;
+        string exAttr = excludedAttributes is () ? "excludedAttributes" : string `excludedAttributes=${getparams(excludedAttributes)}`;
+        string fltr = filter is () ? "filter" : string `filter=${filter}`;
+        string stIdx = startIndex is () ? "startIndex" : string `startIndex=${startIndex}`;
+        UserResponse response = check self.clientEndpoint->get(string `${USERS}?${attr}&${cnt}&${dom}&${exAttr}&${fltr}&${stIdx}`);
         return response;
     }
 
     # Gets a user by the user ID.
     #
-    # + id - The ID of the user
+    # + id - The ID of the user  
+    # + attributes - SCIM defined attributes parameter  
+    # + excludedAttributes - SCIM defined excludedAttribute parameter 
     # + return - The user
     @display {label: "Get User by ID"}
-    public isolated function getUser(@display {label: "User Id"} string id) returns UserResource|error {
-        UserResource response = check self.clientEndpoint->get(string `${USERS}/${id}`);
+    public isolated function getUser(@display {label: "User Id"} string id, string[]? attributes = (), string[]? excludedAttributes = ()) returns UserResource|error {
+        string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
+        string exAttr = excludedAttributes is () ? "excludedAttributes" : string `excludedAttributes=${getparams(excludedAttributes)}`;
+        UserResource response = check self.clientEndpoint->get(string `${USERS}/${id}?${attr}&${exAttr}`);
         return response;
     }
 
@@ -101,26 +117,42 @@ public client class Client {
     # + return - The list of users
     @display {label: "Search User"}
     public isolated function searchUser(@display {label: "Search Data"} UserSearch data) returns UserResponse|error {
-        UserResponse|error response = self.clientEndpoint->post(string `${USERS}/.search`, data);
+        UserResponse response = check self.clientEndpoint->post(string `${USERS}/.search`, data);
         return response;
     }
 
-    # Gets the list of groups.
+    # Filter the groups.
     #
+    # + attributes - SCIM defined attributes parameter  
+    # + count - Specifies the desired maximum number of query results per page  
+    # + domain - The name of the user store where filtering needs to be applied  
+    # + excludedAttributes - SCIM defined excludedAttribute parameter  
+    # + filter - Filter expression for filtering  
+    # + startIndex - The 1-based index of the first query result
     # + return - The list of groups
     @display {label: "Get Groups"}
-    public isolated function getGroups() returns GroupResponse|error {
-        GroupResponse|error response = self.clientEndpoint->get(GROUPS);
+    public isolated function getGroups(string[]? attributes = (), int? count = (), string? domain = (), string[]? excludedAttributes = (), string? filter = (), int? startIndex = ()) returns GroupResponse|error {
+        string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
+        string cnt = count is () ? "count" : string `count=${count}`;
+        string dom = domain is () ? "domain" : string `domain=${domain}`;
+        string exAttr = excludedAttributes is () ? "excludedAttributes" : string `excludedAttributes=${getparams(excludedAttributes)}`;
+        string fltr = filter is () ? "filter" : string `filter=${filter}`;
+        string stIdx = startIndex is () ? "startIndex" : string `startIndex=${startIndex}`;
+        GroupResponse response = check self.clientEndpoint->get(string `${GROUPS}?${attr}&${cnt}&${dom}&${exAttr}&${fltr}&${stIdx}`);
         return response;
     }
 
     # Gets a group by the group ID.
     #
-    # + id - The ID of the group
+    # + id - The ID of the group  
+    # + attributes - SCIM defined attributes parameter  
+    # + excludedAttributes - SCIM defined excludedAttribute parameter 
     # + return - The group
     @display {label: "Get Group by ID"}
-    public isolated function getGroup(@display {label: "Group Id"} string id) returns GroupResource|error {
-        GroupResource response = check self.clientEndpoint->get(string `${GROUPS}/${id}`);
+    public isolated function getGroup(@display {label: "Group Id"} string id, string[]? attributes = (), string[]? excludedAttributes = ()) returns GroupResource|error {
+        string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
+        string exAttr = excludedAttributes is () ? "excludedAttributes" : string `excludedAttributes=${getparams(excludedAttributes)}`;
+        GroupResource response = check self.clientEndpoint->get(string `${GROUPS}/${id}?${attr}&${exAttr}`);
         return response;
     }
 

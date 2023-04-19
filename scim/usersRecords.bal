@@ -68,7 +68,7 @@ public type SCIMUser record {
     Certificate[] x509Certificates?;
     Meta meta?;
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
-    Custom urn\:scim\:wso2\:schema?;
+    json urn\:scim\:wso2\:schema?;
 };
 
 # Represents the SCIM User resource request body used for createUser.
@@ -125,7 +125,7 @@ public type UserCreate record {
     Certificate[] x509Certificates?;
     Meta meta?;
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
-    Custom urn\:scim\:wso2\:schema?;
+    json urn\:scim\:wso2\:schema?;
 };
 
 # Represents the SCIM Enterprise User extensioon resource.
@@ -333,9 +333,9 @@ public type UserResource record {
     Entitlement[] entitlements?;
     string locale?;
     boolean active?;
-    Meta meta;
+    Meta meta?;
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
-    Custom urn\:scim\:wso2\:schema?;
+    json urn\:scim\:wso2\:schema?;
     Role[] roles?;
 };
 
@@ -354,23 +354,6 @@ public type Name record {
     string middleName?;
     string honorificPrefix?;
     string honorificSuffix?;
-};
-
-# Represents the Custom Schema 
-#
-# + idpType - Identity provider type  
-# + isReadOnlyUser - Whether the user is read only
-# + userSource - Source of the user 
-# + photoUrl - URI of the user's photo  
-# + userAccountType - Type of the user account  
-# + askPassword - Whether the user is asked to provide a password
-public type Custom record {
-    string idpType?;
-    boolean|string isReadOnlyUser?;
-    string userSource?;
-    string photoUrl?;
-    string userAccountType?;
-    boolean askPassword?;
 };
 
 # Represents the request of updateUser operation.
@@ -395,7 +378,6 @@ public type Custom record {
 # + locale - Default location of the user  
 # + timezone - Time zone of the user  
 # + active - Administrative status of the user  
-# + groups - Groups to which the user belongs  
 # + x509Certificates - Certificates associated with the user  
 # + meta - Metadata of the user  
 # + urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User - Attributes belong to business or enterprise extension schema
@@ -420,7 +402,6 @@ public type UserUpdate record {
     string locale?;
     string timezone?;
     boolean active?;
-    Groups[] groups?;
     Certificate[] x509Certificates?;
     Meta meta?;
     SCIMEnterpriseUser urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
