@@ -44,7 +44,7 @@ public client class Client {
     # + startIndex - The 1-based index of the first query result
     # + return - The list of users
     @display {label: "Get Users"}
-    public isolated function getUsers(string[]? attributes = (), int? count = (), string? domain = (), string[]? excludedAttributes = (), string? filter = (), int? startIndex = ()) returns UserResponse|error {
+    public isolated function getUsers(@display {label: "Attributes"} string[]? attributes = (), @display {label: "Count"} int? count = (), @display {label: "Domain"} string? domain = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = (), @display {label: "Filter"} string? filter = (), @display {label: "Start Index"} int? startIndex = ()) returns UserResponse|error {
         string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
         string cnt = count is () ? "count" : string `count=${count}`;
         string dom = domain is () ? "domain" : string `domain=${domain}`;
@@ -62,7 +62,7 @@ public client class Client {
     # + excludedAttributes - SCIM defined excludedAttribute parameter 
     # + return - The user
     @display {label: "Get User by ID"}
-    public isolated function getUser(@display {label: "User Id"} string id, string[]? attributes = (), string[]? excludedAttributes = ()) returns UserResource|error {
+    public isolated function getUser(@display {label: "User Id"} string id, @display {label: "Attributes"} string[]? attributes = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = ()) returns UserResource|error {
         string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
         string exAttr = excludedAttributes is () ? "excludedAttributes" : string `excludedAttributes=${getparams(excludedAttributes)}`;
         UserResource response = check self.clientEndpoint->get(string `${USERS}/${id}?${attr}&${exAttr}`);
@@ -131,7 +131,7 @@ public client class Client {
     # + startIndex - The 1-based index of the first query result
     # + return - The list of groups
     @display {label: "Get Groups"}
-    public isolated function getGroups(string[]? attributes = (), int? count = (), string? domain = (), string[]? excludedAttributes = (), string? filter = (), int? startIndex = ()) returns GroupResponse|error {
+    public isolated function getGroups(@display {label: "Attributes"} string[]? attributes = (), @display {label: "Count"} int? count = (), @display {label: "Domain"} string? domain = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = (), @display {label: "Filter"} string? filter = (), @display {label: "Start Index"} int? startIndex = ()) returns GroupResponse|error {
         string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
         string cnt = count is () ? "count" : string `count=${count}`;
         string dom = domain is () ? "domain" : string `domain=${domain}`;
@@ -149,7 +149,7 @@ public client class Client {
     # + excludedAttributes - SCIM defined excludedAttribute parameter 
     # + return - The group
     @display {label: "Get Group by ID"}
-    public isolated function getGroup(@display {label: "Group Id"} string id, string[]? attributes = (), string[]? excludedAttributes = ()) returns GroupResource|error {
+    public isolated function getGroup(@display {label: "Group Id"} string id, @display {label: "Attributes"} string[]? attributes = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = ()) returns GroupResource|error {
         string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
         string exAttr = excludedAttributes is () ? "excludedAttributes" : string `excludedAttributes=${getparams(excludedAttributes)}`;
         GroupResource response = check self.clientEndpoint->get(string `${GROUPS}/${id}?${attr}&${exAttr}`);

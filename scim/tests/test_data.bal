@@ -18,29 +18,25 @@ final string & readonly testUserId = "892b2a2f-8b4d-4df6-b414-c7a7479f29c8";
 
 final string & readonly testUserId1 = "d29e781f-aa97-4449-ae85-139b67533ce1";
 
-final string & readonly testUserId2 = "139b67533ce1";
-
 final string & readonly testGroupId = "1fd8d238-8128-4386-8b0d-81246c6eb41d";
-
-final string & readonly testGroupId1 = "81246c6eb41d";
 
 final UserCreate & readonly testCreateUserData = {
     schemas: [],
     name: {
-        givenName: "Kim11",
-        familyName: "Berry11"
+        givenName: "Kim",
+        familyName: "Berry"
     },
-    userName: "DEFAULT/kim00@gmail.com",
+    userName: "DEFAULT/kimberry00@gmail.com",
     password: "aBcd!23455",
     emails: [
         {
             'type: "home",
-            value: "kim1@gmail.com",
+            value: "kimberry@gmail.com",
             primary: true
         },
         {
             'type: "work",
-            value: "kim1@wso2.com"
+            value: "kim11@wso2.com"
         }
     ],
     urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User: {
@@ -123,6 +119,7 @@ final GroupPatch & readonly testPatchGroupData = {
             }
         }
     ]
+
 };
 
 final GroupSearch & readonly testSearchGroupData = {
@@ -140,48 +137,28 @@ final Bulk & readonly testBulkData = {
     ],
     Operations: [
         {
-            method: "POST",
-            path: "/Users",
+            method: "PUT",
+            path: "/Users/4d1c5a37-f407-44f1-af95-bb89a4679239",
             bulkId: "qwerty",
             data: {
-                schemas: [
-                    "urn:ietf:params:scim:schemas:core:2.0:User"
-                ],
-                userName: "DEFAULT/Kim",
-                password: "Kimm@123",
                 name: {
-                    givenName: "Kim",
+                    givenName: "Kim9997",
                     familyName: "Berry"
-                }
+                },
+                userName: "DEFAULT/Kimm@gmail.com"
 
             }
         },
         {
-            method: "POST",
-            path: "/Users",
+            method: "PUT",
+            path: "/Users/c479016c-5d29-437e-9314-48cba56df6ce",
             bulkId: "ytrewq",
             data: {
-                schemas: [
-                    "urn:ietf:params:scim:schemas:core:2.0:User",
-                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
-                ],
                 name: {
                     givenName: "Smith",
                     familyName: "Berry"
                 },
-                userName: "DEFAULT/smith",
-                password: "Smith@123",
-                emails: [
-                    {
-                        'type: "home",
-                        value: "smith@gmail.com",
-                        primary: true
-                    },
-                    {
-                        'type: "work",
-                        value: "smith@wso2.com"
-                    }
-                ],
+                userName: "DEFAULT/Smith@gmail.com",
                 urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User: {
                     "employeeNumber": "1234A",
                     "manager": {

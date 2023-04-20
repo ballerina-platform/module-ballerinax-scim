@@ -16,11 +16,29 @@
 
 import ballerina/log;
 import ballerina/test;
+import ballerina/os;
+import ballerina/io;
 
-configurable string org_name = ?;
-configurable string clientId = ?;
-configurable string clientSecret = ?;
-configurable string[] scope = ?;
+configurable string org_name = os:getEnv("ORG_NAME");
+configurable string clientId = os:getEnv("CLIENT_ID");
+configurable string clientSecret = os:getEnv("CLIENT_SECRET");
+
+string[] scope = [
+    "internal_user_mgt_view",
+    "internal_user_mgt_list",
+    "internal_user_mgt_create",
+    "internal_user_mgt_delete",
+    "internal_user_mgt_update",
+    "internal_user_mgt_delete",
+    "internal_group_mgt_view",
+    "internal_group_mgt_list",
+    "internal_group_mgt_create",
+    "internal_group_mgt_delete",
+    "internal_group_mgt_update",
+    "internal_group_mgt_delete"
+];
+string CreatedUserId = "";
+string CreatedGroupId = "";
 
 ConnectorConfig scimConfig = {
     orgName: org_name,
@@ -33,6 +51,7 @@ Client scimClient = check new (scimConfig);
 
 @test:Config {}
 function testGetUsers() returns error? {
+    io:println(CreatedUserId);
     log:printInfo("scimClient.getUsers()");
     UserResponse response = check scimClient.getUsers();
     log:printInfo(response.toString());
@@ -45,10 +64,11 @@ function testGetUser() returns error? {
     log:printInfo(response.toString());
 }
 
-@test:Config {}
+@test:Config {enable: false}
 function testCreateUser() returns error? {
     log:printInfo("scimClient.createUser()");
     UserResource response = check scimClient.createUser(testCreateUserData);
+    CreatedUserId = response.id.toString();
     log:printInfo(response.toString());
 }
 
@@ -59,10 +79,10 @@ function testUpdateUser() returns error? {
     log:printInfo(response.toString());
 }
 
-@test:Config {}
-function testdeleteUser() returns error? {
+@test:Config {before: testCreateUser}
+function testDeleteUser() returns error? {
     log:printInfo("scimClient.deleteUser()");
-    json response = check scimClient.deleteUser(testUserId2);
+    json response = check scimClient.deleteUser(CreatedUserId);
     log:printInfo(response.toString());
 }
 
@@ -94,24 +114,25 @@ function testGetGroup() returns error? {
     log:printInfo(response.toString());
 }
 
-@test:Config {}
-function testcreateGroup() returns error? {
+@test:Config {enable: false}
+function testCreateGroup() returns error? {
     log:printInfo("scimClient.createGroup()");
-    UserResource response = check scimClient.createGroup(testCreateGroupData);
+    GroupResource response = check scimClient.createGroup(testCreateGroupData);
+    CreatedGroupId = response.id.toString();
     log:printInfo(response.toString());
 }
 
 @test:Config {}
 function testUpdateGroup() returns error? {
     log:printInfo("scimClient.updateGroup()");
-    UserResource response = check scimClient.updateGroup(testGroupId, testUpdateGroupData);
+    GroupResource response = check scimClient.updateGroup(testGroupId, testUpdateGroupData);
     log:printInfo(response.toString());
 }
 
-@test:Config {}
-function testdeleteGroup() returns error? {
+@test:Config {before: testCreateGroup}
+function testDeleteGroup() returns error? {
     log:printInfo("scimClient.deleteGroup()");
-    json response = check scimClient.deleteGroup(testGroupId1);
+    json response = check scimClient.deleteGroup(CreatedGroupId);
     log:printInfo(response.toString());
 }
 
@@ -125,7 +146,7 @@ function testPatchGroup() returns error? {
 @test:Config {}
 function testSearchGroup() returns error? {
     log:printInfo("scimClient.searchGroup()");
-    UserResponse response = check scimClient.searchGroup(testSearchGroupData);
+    GroupResponse response = check scimClient.searchGroup(testSearchGroupData);
     log:printInfo(response.toString());
 }
 
