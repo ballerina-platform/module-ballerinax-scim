@@ -1,0 +1,14 @@
+name: Pull_Request
+
+on: [pull_request]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+            - name: Ballerina Build
+              uses: ballerina-platform/ballerina-action/@nightly
+              with:
+                  args: pack ./scim
