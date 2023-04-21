@@ -18,7 +18,7 @@ import ballerina/http;
 
 # This client is used to connect to the SCIM2 APIs of Asgardeo for Inbound User Provisioning.
 @display {label: "SCIM Client Connector"}
-public client class Client {
+public isolated client class Client {
     final http:Client clientEndpoint;
 
     # Initializes the SCIM client.
@@ -44,7 +44,7 @@ public client class Client {
     # + startIndex - The 1-based index of the first query result
     # + return - The list of users
     @display {label: "Get Users"}
-    public isolated function getUsers(@display {label: "Attributes"} string[]? attributes = (), @display {label: "Count"} int? count = (), @display {label: "Domain"} string? domain = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = (), @display {label: "Filter"} string? filter = (), @display {label: "Start Index"} int? startIndex = ()) returns UserResponse|error {
+    remote isolated function getUsers(@display {label: "Attributes"} string[]? attributes = (), @display {label: "Count"} int? count = (), @display {label: "Domain"} string? domain = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = (), @display {label: "Filter"} string? filter = (), @display {label: "Start Index"} int? startIndex = ()) returns UserResponse|error {
         string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
         string cnt = count is () ? "count" : string `count=${count}`;
         string dom = domain is () ? "domain" : string `domain=${domain}`;
@@ -62,7 +62,7 @@ public client class Client {
     # + excludedAttributes - SCIM defined excludedAttribute parameter 
     # + return - The user
     @display {label: "Get User by ID"}
-    public isolated function getUser(@display {label: "User Id"} string id, @display {label: "Attributes"} string[]? attributes = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = ()) returns UserResource|error {
+    remote isolated function getUser(@display {label: "User Id"} string id, @display {label: "Attributes"} string[]? attributes = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = ()) returns UserResource|error {
         string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
         string exAttr = excludedAttributes is () ? "excludedAttributes" : string `excludedAttributes=${getparams(excludedAttributes)}`;
         UserResource response = check self.clientEndpoint->get(string `${USERS}/${id}?${attr}&${exAttr}`);
@@ -74,7 +74,7 @@ public client class Client {
     # + data - The user data
     # + return - The created user
     @display {label: "Create User"}
-    public isolated function createUser(@display {label: "User data"} UserCreate data) returns UserResource|error {
+    remote isolated function createUser(@display {label: "User data"} UserCreate data) returns UserResource|error {
         UserResource response = check self.clientEndpoint->post(USERS, data);
         return response;
     }
@@ -85,7 +85,7 @@ public client class Client {
     # + data - The user data to be updated
     # + return - The updated user
     @display {label: "Update User"}
-    public isolated function updateUser(@display {label: "User Id"} string id, @display {label: "User updated data"} UserUpdate data) returns UserResource|error {
+    remote isolated function updateUser(@display {label: "User Id"} string id, @display {label: "User updated data"} UserUpdate data) returns UserResource|error {
         UserResource response = check self.clientEndpoint->put(string `${USERS}/${id}`, data);
         return response;
     }
@@ -95,7 +95,7 @@ public client class Client {
     # + id - The ID of the user
     # + return - The response
     @display {label: "Delete User"}
-    public isolated function deleteUser(@display {label: "User Id"} string id) returns json|error {
+    remote isolated function deleteUser(@display {label: "User Id"} string id) returns json|error {
         json response = check self.clientEndpoint->delete(string `${USERS}/${id}`);
         return response;
     }
@@ -106,7 +106,7 @@ public client class Client {
     # + data - The user data to be patched
     # + return - The patched user
     @display {label: "Patch User"}
-    public isolated function patchUser(@display {label: "User Id"} string id, @display {label: "Patch data"} UserPatch data) returns UserResponse|error {
+    remote isolated function patchUser(@display {label: "User Id"} string id, @display {label: "Patch data"} UserPatch data) returns UserResponse|error {
         UserResponse response = check self.clientEndpoint->patch(string `${USERS}/${id}`, data);
         return response;
     }
@@ -116,7 +116,7 @@ public client class Client {
     # + data - The search data
     # + return - The list of users
     @display {label: "Search User"}
-    public isolated function searchUser(@display {label: "Search Data"} UserSearch data) returns UserResponse|error {
+    remote isolated function searchUser(@display {label: "Search Data"} UserSearch data) returns UserResponse|error {
         UserResponse response = check self.clientEndpoint->post(string `${USERS}/.search`, data);
         return response;
     }
@@ -131,7 +131,7 @@ public client class Client {
     # + startIndex - The 1-based index of the first query result
     # + return - The list of groups
     @display {label: "Get Groups"}
-    public isolated function getGroups(@display {label: "Attributes"} string[]? attributes = (), @display {label: "Count"} int? count = (), @display {label: "Domain"} string? domain = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = (), @display {label: "Filter"} string? filter = (), @display {label: "Start Index"} int? startIndex = ()) returns GroupResponse|error {
+    remote isolated function getGroups(@display {label: "Attributes"} string[]? attributes = (), @display {label: "Count"} int? count = (), @display {label: "Domain"} string? domain = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = (), @display {label: "Filter"} string? filter = (), @display {label: "Start Index"} int? startIndex = ()) returns GroupResponse|error {
         string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
         string cnt = count is () ? "count" : string `count=${count}`;
         string dom = domain is () ? "domain" : string `domain=${domain}`;
@@ -149,7 +149,7 @@ public client class Client {
     # + excludedAttributes - SCIM defined excludedAttribute parameter 
     # + return - The group
     @display {label: "Get Group by ID"}
-    public isolated function getGroup(@display {label: "Group Id"} string id, @display {label: "Attributes"} string[]? attributes = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = ()) returns GroupResource|error {
+    remote isolated function getGroup(@display {label: "Group Id"} string id, @display {label: "Attributes"} string[]? attributes = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = ()) returns GroupResource|error {
         string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
         string exAttr = excludedAttributes is () ? "excludedAttributes" : string `excludedAttributes=${getparams(excludedAttributes)}`;
         GroupResource response = check self.clientEndpoint->get(string `${GROUPS}/${id}?${attr}&${exAttr}`);
@@ -161,7 +161,7 @@ public client class Client {
     # + data - The group data
     # + return - The created group
     @display {label: "Create Group"}
-    public isolated function createGroup(@display {label: "Group Data"} GroupCreate data) returns GroupResource|error {
+    remote isolated function createGroup(@display {label: "Group Data"} GroupCreate data) returns GroupResource|error {
         GroupResource response = check self.clientEndpoint->post(GROUPS, data);
         return response;
     }
@@ -172,7 +172,7 @@ public client class Client {
     # + data - The group data to be updated
     # + return - The updated group
     @display {label: "Update Group"}
-    public isolated function updateGroup(@display {label: "Group Id"} string id, @display {label: "Updated data"} GroupUpdate data) returns GroupResource|error {
+    remote isolated function updateGroup(@display {label: "Group Id"} string id, @display {label: "Updated data"} GroupUpdate data) returns GroupResource|error {
         GroupResource response = check self.clientEndpoint->put(string `${GROUPS}/${id}`, data);
         return response;
     }
@@ -182,7 +182,7 @@ public client class Client {
     # + id - The ID of the group
     # + return - The response
     @display {label: "Delete Group"}
-    public isolated function deleteGroup(@display {label: "Group Id"} string id) returns json|error {
+    remote isolated function deleteGroup(@display {label: "Group Id"} string id) returns json|error {
         json response = check self.clientEndpoint->delete(string `${GROUPS}/${id}`);
         return response;
     }
@@ -193,7 +193,7 @@ public client class Client {
     # + data - The group data to be patched
     # + return - The patched group
     @display {label: "Patch Group"}
-    public isolated function patchGroup(@display {label: "Group Id"} string id, @display {label: "Patch data"} GroupPatch data) returns GroupResponse|error {
+    remote isolated function patchGroup(@display {label: "Group Id"} string id, @display {label: "Patch data"} GroupPatch data) returns GroupResponse|error {
         GroupResponse response = check self.clientEndpoint->patch(string `${GROUPS}/${id}`, data);
         return response;
     }
@@ -203,7 +203,7 @@ public client class Client {
     # + data - The search data
     # + return - The list of groups
     @display {label: "Search Group"}
-    public isolated function searchGroup(@display {label: "Search data"} GroupSearch data) returns GroupResponse|error {
+    remote isolated function searchGroup(@display {label: "Search data"} GroupSearch data) returns GroupResponse|error {
         GroupResponse response = check self.clientEndpoint->post(string `${GROUPS}/.search`, data);
         return response;
     }
@@ -213,7 +213,7 @@ public client class Client {
     # + data - The data for bulk operation
     # + return - The response of the operation
     @display {label: "Bulk Operation"}
-    public isolated function bulk(@display {label: "Bulk operation data"} Bulk data) returns BulkResponse|error {
+    remote isolated function bulk(@display {label: "Bulk operation data"} Bulk data) returns BulkResponse|error {
         BulkResponse response = check self.clientEndpoint->post(BULK, data);
         return response;
     }

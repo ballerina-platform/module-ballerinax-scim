@@ -20,6 +20,19 @@ final string & readonly testUserId1 = "d29e781f-aa97-4449-ae85-139b67533ce1";
 
 final string & readonly testGroupId = "1fd8d238-8128-4386-8b0d-81246c6eb41d";
 
+final string[] & readonly scope = [
+    "internal_user_mgt_view",
+    "internal_user_mgt_list",
+    "internal_user_mgt_create",
+    "internal_user_mgt_delete",
+    "internal_user_mgt_update",
+    "internal_group_mgt_view",
+    "internal_group_mgt_list",
+    "internal_group_mgt_create",
+    "internal_group_mgt_delete",
+    "internal_group_mgt_update"
+];
+
 final UserCreate & readonly testCreateUserData = {
     schemas: [],
     name: {
