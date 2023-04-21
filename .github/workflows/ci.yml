@@ -27,7 +27,6 @@ jobs:
                   ORG_NAME: ${{ secrets.ORG_NAME }}
                   CLIENT_ID: ${{ secrets.CLIENT_ID }}
                   CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-
            
             # Read the ballerina test results
             - name: Read Ballerina Test Results

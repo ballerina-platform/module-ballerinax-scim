@@ -12,3 +12,4 @@ jobs:
               uses: ballerina-platform/ballerina-action/@nightly
               with:
                   args: pack ./scim
+                  
