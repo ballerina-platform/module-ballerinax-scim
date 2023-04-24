@@ -2,5 +2,5 @@
 org = "ballerinax"
 name = "scim"
 version = "0.1.0"
-distribution = "2201.2.3"
+distribution = "2201.4.1"
 license= ["Apache-2.0"]

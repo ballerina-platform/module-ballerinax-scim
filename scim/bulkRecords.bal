@@ -32,8 +32,7 @@ public type Bulk record {
 # + bulkId - BulkId of the operation (required when the method is "POST" )
 # + version - Current resource version (used when method is "PUT", "PATCH", or "DELETE")
 # + data - Data of the operation (not an attribute when method is "DELETE")
-# - method "POST" --->  SCIMUser/SCIMGroup
-# - method "PUT" --->  UserUpdate/GroupUpdate
+# - method "POST","PUT" --->  SCIMUser/SCIMGroup
 # - method "PATCH" --->  BulkPatch 
 # - method "DELETE" --->  (No data attribute)         
 public type Operation record {
