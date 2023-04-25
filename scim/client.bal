@@ -184,7 +184,15 @@ public isolated client class Client {
     # + return - The updated group
     @display {label: "Update Group"}
     remote isolated function updateGroup(@display {label: "Group Id"} string id, @display {label: "Updated data"} GroupUpdate data) returns GroupResource|error {
-        GroupResource response = check self.clientEndpoint->put(string `${GROUPS}/${id}`, data);
+        GroupPatch groupPatch = {
+            Operations: [
+                {
+                    op: "replace",
+                    value: data
+                }
+            ]
+        };
+        GroupResource response = check self.clientEndpoint->patch(string `${GROUPS}/${id}`, groupPatch);
         return response;
     }
 
