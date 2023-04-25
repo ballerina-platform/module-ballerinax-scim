@@ -86,7 +86,18 @@ public isolated client class Client {
     # + return - The updated user
     @display {label: "Update User"}
     remote isolated function updateUser(@display {label: "User Id"} string id, @display {label: "User updated data"} UserUpdate data) returns UserResource|error {
-        UserResource response = check self.clientEndpoint->put(string `${USERS}/${id}`, data);
+        UserPatch userPatch = {
+            schemas: [
+                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+            ],
+            Operations: [
+                {
+                    op: "replace",
+                    value: data
+                }
+            ]
+        };
+        UserResource response = check self.clientEndpoint->patch(string `${USERS}/${id}`, userPatch);
         return response;
     }
 
