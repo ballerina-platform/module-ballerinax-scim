@@ -16,17 +16,27 @@ To use this package import the package to a Ballerina program.
 ```ballerina
 import ballerinax/scim;
 ```
+Initialize the connector configuration record.
+
+```ballerina
+scim:ConnectorConfig config = {
+    orgName: "<orgName>",
+    clientId: "<clientId>",
+    clientSecret : "<clientSecret>",
+    scope : ["<scope1>", "<scope2>"]
+};
+```
 
 Initialize the connector.
 
 ```ballerina
-scim:Client client1 = check new("<OrganizationName>","<ClientId>", "<ClientSecret>", [<"Scopes"]>);
+scim:Client client1 = check new(scim:ConnectorConfig config);
 ```
 
 Invoke the connector operations by passing the required parameters.
 
 ```ballerina
-scim:UserResource response= check client1.getUser(<"Id">);
+scim:UserResource response= check scimClient->getUser("<userId>");
 ```
 
 ## 
