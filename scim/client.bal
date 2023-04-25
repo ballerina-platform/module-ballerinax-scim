@@ -44,7 +44,7 @@ public isolated client class Client {
     # + startIndex - The 1-based index of the first query result
     # + return - The list of users
     @display {label: "Get Users"}
-    remote isolated function getUsers(@display {label: "Attributes"} string[]? attributes = (), @display {label: "Count"} int? count = (), @display {label: "Domain"} string? domain = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = (), @display {label: "Filter"} string? filter = (), @display {label: "Start Index"} int? startIndex = ()) returns UserResponse|error {
+    remote isolated function getUsers(@display {label: "Attributes"} string[]? attributes = (), @display {label: "Count"} int? count = (), @display {label: "Domain"} string? domain = "DEFAULT", @display {label: "Excluded Attributes"} string[]? excludedAttributes = (), @display {label: "Filter"} string? filter = (), @display {label: "Start Index"} int? startIndex = ()) returns UserResponse|error {
         string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
         string cnt = count is () ? "count" : string `count=${count}`;
         string dom = domain is () ? "domain" : string `domain=${domain}`;
@@ -79,7 +79,7 @@ public isolated client class Client {
         return response;
     }
 
-    # Updates a user.
+    # Updates user data.
     #
     # + id - The ID of the user
     # + data - The user data to be updated
@@ -111,7 +111,7 @@ public isolated client class Client {
         return response;
     }
 
-    # Patches a user.
+    # Patches user data.
     #
     # + id - The ID of the user
     # + data - The user data to be patched

@@ -65,8 +65,7 @@ final UserUpdate & readonly testUpdateUserData = {
     name: {
         givenName: "Kim9997",
         familyName: "Berry"
-    },
-    userName: "DEFAULT/kim19906@gmail.com"
+    }
 };
 
 final UserPatch testPatchUserData = {

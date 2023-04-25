@@ -415,7 +415,7 @@ public type UserUpdate record {
 public type PatchOperations record {
     opType op;
     string path?;
-    UserUpdate value;
+    UserUpdate value?;
 };
 
 # Represents the request body of userPatch operation.
