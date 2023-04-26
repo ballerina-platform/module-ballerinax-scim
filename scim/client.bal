@@ -44,15 +44,18 @@ public isolated client class Client {
     # + startIndex - The 1-based index of the first query result
     # + return - The list of users
     @display {label: "Get Users"}
-    remote isolated function getUsers(@display {label: "Attributes"} string[]? attributes = (), @display {label: "Count"} int? count = (), @display {label: "Domain"} string? domain = "DEFAULT", @display {label: "Excluded Attributes"} string[]? excludedAttributes = (), @display {label: "Filter"} string? filter = (), @display {label: "Start Index"} int? startIndex = ()) returns UserResponse|error {
+    remote isolated function getUsers(@display {label: "Attributes"} string[]? attributes = (), @display {label: "Count"} int? count = (), @display {label: "Domain"} string? domain = "DEFAULT", @display {label: "Excluded Attributes"} string[]? excludedAttributes = (), @display {label: "Filter"} string? filter = (), @display {label: "Start Index"} int? startIndex = ()) returns UserResponse|ErrorResponse|error {
         string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
         string cnt = count is () ? "count" : string `count=${count}`;
         string dom = domain is () ? "domain" : string `domain=${domain}`;
         string exAttr = excludedAttributes is () ? "excludedAttributes" : string `excludedAttributes=${getparams(excludedAttributes)}`;
         string fltr = filter is () ? "filter" : string `filter=${filter}`;
         string stIdx = startIndex is () ? "startIndex" : string `startIndex=${startIndex}`;
-        UserResponse response = check self.clientEndpoint->get(string `${USERS}?${attr}&${cnt}&${dom}&${exAttr}&${fltr}&${stIdx}`);
-        return response;
+        UserResponse|http:ClientError response = self.clientEndpoint->get(string `${USERS}?${attr}&${cnt}&${dom}&${exAttr}&${fltr}&${stIdx}`);
+        if (response is UserResponse) {
+            return response;
+        }
+        return getErrorResponse(response);
     }
 
     # Gets a user by the user ID.
@@ -62,11 +65,14 @@ public isolated client class Client {
     # + excludedAttributes - SCIM defined excludedAttribute parameter 
     # + return - The user
     @display {label: "Get User by ID"}
-    remote isolated function getUser(@display {label: "User Id"} string id, @display {label: "Attributes"} string[]? attributes = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = ()) returns UserResource|error {
+    remote isolated function getUser(@display {label: "User Id"} string id, @display {label: "Attributes"} string[]? attributes = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = ()) returns UserResource|ErrorResponse|error {
         string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
         string exAttr = excludedAttributes is () ? "excludedAttributes" : string `excludedAttributes=${getparams(excludedAttributes)}`;
-        UserResource response = check self.clientEndpoint->get(string `${USERS}/${id}?${attr}&${exAttr}`);
-        return response;
+        UserResource|http:ClientError response = self.clientEndpoint->get(string `${USERS}/${id}?${attr}&${exAttr}`);
+        if (response is UserResource) {
+            return response;
+        }
+        return getErrorResponse(response);
     }
 
     # Creates a user.
@@ -74,9 +80,12 @@ public isolated client class Client {
     # + data - The user data
     # + return - The created user
     @display {label: "Create User"}
-    remote isolated function createUser(@display {label: "User data"} UserCreate data) returns UserResource|error {
-        UserResource response = check self.clientEndpoint->post(USERS, data);
-        return response;
+    remote isolated function createUser(@display {label: "User data"} UserCreate data) returns UserResource|ErrorResponse|error {
+        UserResource|http:ClientError response = self.clientEndpoint->post(USERS, data);
+        if (response is UserResource) {
+            return response;
+        }
+        return getErrorResponse(response);
     }
 
     # Updates user data.
@@ -85,7 +94,7 @@ public isolated client class Client {
     # + data - The user data to be updated
     # + return - The updated user
     @display {label: "Update User"}
-    remote isolated function updateUser(@display {label: "User Id"} string id, @display {label: "User updated data"} UserUpdate data) returns UserResource|error {
+    remote isolated function updateUser(@display {label: "User Id"} string id, @display {label: "User updated data"} UserUpdate data) returns UserResource|ErrorResponse|error {
         UserPatch userPatch = {
             schemas: [
                 "urn:ietf:params:scim:api:messages:2.0:PatchOp"
@@ -97,8 +106,11 @@ public isolated client class Client {
                 }
             ]
         };
-        UserResource response = check self.clientEndpoint->patch(string `${USERS}/${id}`, userPatch);
-        return response;
+        UserResource|http:ClientError response = self.clientEndpoint->patch(string `${USERS}/${id}`, userPatch);
+        if (response is UserResource) {
+            return response;
+        }
+        return getErrorResponse(response);
     }
 
     # Deletes a user.
@@ -106,9 +118,11 @@ public isolated client class Client {
     # + id - The ID of the user
     # + return - The response
     @display {label: "Delete User"}
-    remote isolated function deleteUser(@display {label: "User Id"} string id) returns json|error {
-        json response = check self.clientEndpoint->delete(string `${USERS}/${id}`);
-        return response;
+    remote isolated function deleteUser(@display {label: "User Id"} string id) returns ErrorResponse|error? {
+        http:ClientError? response = self.clientEndpoint->delete(string `${USERS}/${id}`);
+        if (response is http:ClientError) {
+            return getErrorResponse(response);
+        }
     }
 
     # Patches user data.
@@ -117,9 +131,12 @@ public isolated client class Client {
     # + data - The user data to be patched
     # + return - The patched user
     @display {label: "Patch User"}
-    remote isolated function patchUser(@display {label: "User Id"} string id, @display {label: "Patch data"} UserPatch data) returns UserResponse|error {
-        UserResponse response = check self.clientEndpoint->patch(string `${USERS}/${id}`, data);
-        return response;
+    remote isolated function patchUser(@display {label: "User Id"} string id, @display {label: "Patch data"} UserPatch data) returns UserResponse|ErrorResponse|error {
+        UserResponse|http:ClientError response = self.clientEndpoint->patch(string `${USERS}/${id}`, data);
+        if (response is UserResponse) {
+            return response;
+        }
+        return getErrorResponse(response);
     }
 
     # Searches for a user.
@@ -127,9 +144,12 @@ public isolated client class Client {
     # + data - The search data
     # + return - The list of users
     @display {label: "Search User"}
-    remote isolated function searchUser(@display {label: "Search Data"} UserSearch data) returns UserResponse|error {
-        UserResponse response = check self.clientEndpoint->post(string `${USERS}/.search`, data);
-        return response;
+    remote isolated function searchUser(@display {label: "Search Data"} UserSearch data) returns UserResponse|ErrorResponse|error {
+        UserResponse|http:ClientError response = self.clientEndpoint->post(string `${USERS}/.search`, data);
+        if (response is UserResponse) {
+            return response;
+        }
+        return getErrorResponse(response);
     }
 
     # Filter the groups.
@@ -142,15 +162,18 @@ public isolated client class Client {
     # + startIndex - The 1-based index of the first query result
     # + return - The list of groups
     @display {label: "Get Groups"}
-    remote isolated function getGroups(@display {label: "Attributes"} string[]? attributes = (), @display {label: "Count"} int? count = (), @display {label: "Domain"} string? domain = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = (), @display {label: "Filter"} string? filter = (), @display {label: "Start Index"} int? startIndex = ()) returns GroupResponse|error {
+    remote isolated function getGroups(@display {label: "Attributes"} string[]? attributes = (), @display {label: "Count"} int? count = (), @display {label: "Domain"} string? domain = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = (), @display {label: "Filter"} string? filter = (), @display {label: "Start Index"} int? startIndex = ()) returns GroupResponse|ErrorResponse|error {
         string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
         string cnt = count is () ? "count" : string `count=${count}`;
         string dom = domain is () ? "domain" : string `domain=${domain}`;
         string exAttr = excludedAttributes is () ? "excludedAttributes" : string `excludedAttributes=${getparams(excludedAttributes)}`;
         string fltr = filter is () ? "filter" : string `filter=${filter}`;
         string stIdx = startIndex is () ? "startIndex" : string `startIndex=${startIndex}`;
-        GroupResponse response = check self.clientEndpoint->get(string `${GROUPS}?${attr}&${cnt}&${dom}&${exAttr}&${fltr}&${stIdx}`);
-        return response;
+        GroupResponse|http:ClientError response = self.clientEndpoint->get(string `${GROUPS}?${attr}&${cnt}&${dom}&${exAttr}&${fltr}&${stIdx}`);
+        if (response is GroupResponse) {
+            return response;
+        }
+        return getErrorResponse(response);
     }
 
     # Gets a group by the group ID.
@@ -160,11 +183,14 @@ public isolated client class Client {
     # + excludedAttributes - SCIM defined excludedAttribute parameter 
     # + return - The group
     @display {label: "Get Group by ID"}
-    remote isolated function getGroup(@display {label: "Group Id"} string id, @display {label: "Attributes"} string[]? attributes = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = ()) returns GroupResource|error {
+    remote isolated function getGroup(@display {label: "Group Id"} string id, @display {label: "Attributes"} string[]? attributes = (), @display {label: "Excluded Attributes"} string[]? excludedAttributes = ()) returns GroupResource|ErrorResponse|error {
         string attr = attributes is () ? "attributes" : string `attributes=${getparams(attributes)}`;
         string exAttr = excludedAttributes is () ? "excludedAttributes" : string `excludedAttributes=${getparams(excludedAttributes)}`;
-        GroupResource response = check self.clientEndpoint->get(string `${GROUPS}/${id}?${attr}&${exAttr}`);
-        return response;
+        GroupResource|http:ClientError response = self.clientEndpoint->get(string `${GROUPS}/${id}?${attr}&${exAttr}`);
+        if (response is GroupResource) {
+            return response;
+        }
+        return getErrorResponse(response);
     }
 
     # Creates a group.
@@ -172,9 +198,12 @@ public isolated client class Client {
     # + data - The group data
     # + return - The created group
     @display {label: "Create Group"}
-    remote isolated function createGroup(@display {label: "Group Data"} GroupCreate data) returns GroupResource|error {
-        GroupResource response = check self.clientEndpoint->post(GROUPS, data);
-        return response;
+    remote isolated function createGroup(@display {label: "Group Data"} GroupCreate data) returns GroupResource|ErrorResponse|error {
+        GroupResource|http:ClientError response = self.clientEndpoint->post(GROUPS, data);
+        if (response is GroupResource) {
+            return response;
+        }
+        return getErrorResponse(response);
     }
 
     # Updates a group.
@@ -192,8 +221,11 @@ public isolated client class Client {
                 }
             ]
         };
-        GroupResource response = check self.clientEndpoint->patch(string `${GROUPS}/${id}`, groupPatch);
-        return response;
+        GroupResource|http:ClientError response = self.clientEndpoint->patch(string `${GROUPS}/${id}`, groupPatch);
+        if (response is GroupResource) {
+            return response;
+        }
+        return getErrorResponse(response);
     }
 
     # Deletes a group.
@@ -201,9 +233,11 @@ public isolated client class Client {
     # + id - The ID of the group
     # + return - The response
     @display {label: "Delete Group"}
-    remote isolated function deleteGroup(@display {label: "Group Id"} string id) returns json|error {
-        json response = check self.clientEndpoint->delete(string `${GROUPS}/${id}`);
-        return response;
+    remote isolated function deleteGroup(@display {label: "Group Id"} string id) returns ErrorResponse|error? {
+        http:ClientError? response = self.clientEndpoint->delete(string `${GROUPS}/${id}`);
+        if (response is http:ClientError) {
+            return getErrorResponse(response);
+        }
     }
 
     # Patches a group.
@@ -212,9 +246,12 @@ public isolated client class Client {
     # + data - The group data to be patched
     # + return - The patched group
     @display {label: "Patch Group"}
-    remote isolated function patchGroup(@display {label: "Group Id"} string id, @display {label: "Patch data"} GroupPatch data) returns GroupResponse|error {
-        GroupResponse response = check self.clientEndpoint->patch(string `${GROUPS}/${id}`, data);
-        return response;
+    remote isolated function patchGroup(@display {label: "Group Id"} string id, @display {label: "Patch data"} GroupPatch data) returns GroupResponse|ErrorResponse|error {
+        GroupResponse|http:ClientError response = self.clientEndpoint->patch(string `${GROUPS}/${id}`, data);
+        if (response is GroupResponse) {
+            return response;
+        }
+        return getErrorResponse(response);
     }
 
     # Searches for a group.
@@ -222,9 +259,12 @@ public isolated client class Client {
     # + data - The search data
     # + return - The list of groups
     @display {label: "Search Group"}
-    remote isolated function searchGroup(@display {label: "Search data"} GroupSearch data) returns GroupResponse|error {
-        GroupResponse response = check self.clientEndpoint->post(string `${GROUPS}/.search`, data);
-        return response;
+    remote isolated function searchGroup(@display {label: "Search data"} GroupSearch data) returns GroupResponse|ErrorResponse|error {
+        GroupResponse|http:ClientError response = self.clientEndpoint->post(string `${GROUPS}/.search`, data);
+        if (response is GroupResponse) {
+            return response;
+        }
+        return getErrorResponse(response);
     }
 
     # Performs a bulk operation.
@@ -232,8 +272,11 @@ public isolated client class Client {
     # + data - The data for bulk operation
     # + return - The response of the operation
     @display {label: "Bulk Operation"}
-    remote isolated function bulk(@display {label: "Bulk operation data"} Bulk data) returns BulkResponse|error {
-        BulkResponse response = check self.clientEndpoint->post(BULK, data);
-        return response;
+    remote isolated function bulk(@display {label: "Bulk operation data"} Bulk data) returns BulkResponse|ErrorResponse|error {
+        BulkResponse|http:ClientError response = self.clientEndpoint->post(BULK, data);
+        if (response is BulkResponse) {
+            return response;
+        }
+        return getErrorResponse(response);
     }
 }

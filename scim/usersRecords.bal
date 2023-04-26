@@ -289,12 +289,14 @@ public type UserResponse record {
 # + status - HTTP status code 
 # + schemas - URIs of the used SCIM schemas  
 # + scimType - SCIM type
-public type ErrorResponse record {
+public type ErrorResponseDetails record {
     string detail;
     string status;
     string[] schemas;
     string scimType?;
 };
+
+public type ErrorResponse distinct error<ErrorResponseDetails>;
 
 # Represents the response of the createUser and getUser operations.
 #
