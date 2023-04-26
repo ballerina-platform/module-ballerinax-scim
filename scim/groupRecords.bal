@@ -40,7 +40,7 @@ public type SCIMGroup record {
 # + roles - List of roles for the group
 # + externalId - Identifier by the provisioning client  
 public type GroupCreate record {
-    string[] schemas;
+    string[] schemas = [ "urn:ietf:params:scim:schemas:core:2.0:Group" ];
     string displayName;
     Member[] members?;
     Meta meta?;
@@ -117,7 +117,7 @@ public type GroupUpdate record {
 # + schemas - URIs of the used SCIM schemas  
 # + Operations - List of operations
 public type GroupPatch record {
-    string[] schemas;
+    string[] schemas = [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ];
     PatchOpGroup[] Operations;
 };
 
@@ -148,7 +148,7 @@ public type GroupSearch record {
     string[] excludedAttributes?;
     string sortBy?;
     string sortOrder?;
-    string[] schemas;
+    string[] schemas = [ "urn:ietf:params:scim:api:messages:2.0:SearchRequest" ];
     string filter?;
     int startIndex?;
     int count?;
