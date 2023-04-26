@@ -69,10 +69,7 @@ final UserUpdate & readonly testUpdateUserData = {
     userName: "DEFAULT/kim19906@gmail.com"
 };
 
-final UserPatch & readonly testPatchUserData = {
-    schemas: [
-        "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-    ],
+final UserPatch testPatchUserData = {
     Operations: [
         {
             op: "add",
@@ -83,10 +80,7 @@ final UserPatch & readonly testPatchUserData = {
     ]
 };
 
-final UserSearch & readonly testSearchUserData = {
-    schemas: [
-        "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
-    ],
+final UserSearch testSearchUserData = {
     attributes: [
         "name.familyName",
         "userName"
@@ -97,10 +91,7 @@ final UserSearch & readonly testSearchUserData = {
     count: 10
 };
 
-final GroupCreate & readonly testCreateGroupData = {
-    schemas: [
-        "urn:ietf:params:scim:schemas:core:2.0:Group"
-    ],
+final GroupCreate testCreateGroupData = {
     displayName: "DEFAULT/Members",
     members: [
         {
@@ -115,10 +106,7 @@ final GroupUpdate & readonly testUpdateGroupData = {
     displayName: "DEFAULT/team"
 };
 
-final GroupPatch & readonly testPatchGroupData = {
-    schemas: [
-        "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-    ],
+final GroupPatch testPatchGroupData = {
     Operations: [
         {
             op: "add",
@@ -135,10 +123,7 @@ final GroupPatch & readonly testPatchGroupData = {
 
 };
 
-final GroupSearch & readonly testSearchGroupData = {
-    schemas: [
-        "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
-    ],
+final GroupSearch testSearchGroupData = {
     startIndex: 1,
     filter: "displayName eq manager"
 };
