@@ -425,7 +425,7 @@ public type PatchOperations record {
 # + schemas - URIs of the used SCIM schemas  
 # + Operations - List of operations to be performed
 public type UserPatch record {
-    string[] schemas = [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ];
+    string[] schemas = ["urn:ietf:params:scim:api:messages:2.0:PatchOp"];
     PatchOperations[] Operations;
 };
 
@@ -441,7 +441,7 @@ public type UserPatch record {
 # + sortBy - Attribute used to order the returned responses  
 # + sortOrder - order in which the sortBy parameter is applied
 public type UserSearch record {
-    string[] schemas = [ "urn:ietf:params:scim:api:messages:2.0:SearchRequest" ];
+    string[] schemas = ["urn:ietf:params:scim:api:messages:2.0:SearchRequest"];
     string[] attributes?;
     string[] excludedAttributes?;
     string filter?;

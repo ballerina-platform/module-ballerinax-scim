@@ -30,6 +30,9 @@ isolated function getErrorResponse(http:ClientError clientError) returns ErrorRe
     string responseBodyString = check errorDetail.body.cloneWithType();
     json responseBody = check responseBodyString.fromJsonString();
     string[] schemas = check (check responseBody.schemas).cloneWithType();
-    return error(string `SCIM Error ${clientError.message()}`, detail = responseBody.detail, status = responseBody.status, schemas = schemas);
-
+    return error ErrorResponse (
+        string `SCIM Error ${clientError.message()}`, 
+        detail = check responseBody.detail, 
+        status = check responseBody.status, 
+        schemas = schemas);
 }

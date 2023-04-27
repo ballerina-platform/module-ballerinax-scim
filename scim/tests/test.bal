@@ -56,26 +56,33 @@ function testCreateUser() returns error? {
     UserResource response = check scimClient->createUser(testCreateUserData);
     CreatedUserId = response.id.toString();
     log:printInfo(response.toString());
+
+    log:printInfo("Error-> scimClient.createUser()");
+    UserResource|ErrorResponse|error errorResponse = scimClient->createUser(testCreateUserData);
+    test:assertTrue(errorResponse is ErrorResponse, msg = "Response is not an ErrorResponse");
 }
 
 @test:Config {}
 function testUpdateUser() returns error? {
     log:printInfo("scimClient.updateUser()");
-    UserResource response = check scimClient->updateUser(testUserId1, testUpdateUserData);
+    UserResource response = check scimClient->updateUser(testUserId, testUpdateUserData);
     log:printInfo(response.toString());
+
+    log:printInfo("Error-> scimClient.updateUser()");
+    UserResource|ErrorResponse|error errorResponse = scimClient->updateUser("test", testUpdateUserData);
+    test:assertTrue(errorResponse is ErrorResponse, msg = "Response is not an ErrorResponse");
 }
 
 @test:Config {before: testCreateUser}
 function testDeleteUser() returns error? {
     log:printInfo("scimClient.deleteUser()");
-    json response = check scimClient->deleteUser(CreatedUserId);
-    log:printInfo(response.toString());
+    check scimClient->deleteUser(CreatedUserId);
 }
 
 @test:Config {}
 function testPatchUser() returns error? {
     log:printInfo("scimClient.patchUser()");
-    UserResponse response = check scimClient->patchUser(testUserId1, testPatchUserData);
+    UserResponse response = check scimClient->patchUser(testUserId, testPatchUserData);
     log:printInfo(response.toString());
 }
 

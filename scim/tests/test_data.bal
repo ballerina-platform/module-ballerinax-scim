@@ -16,8 +16,6 @@
 
 final string & readonly testUserId = "892b2a2f-8b4d-4df6-b414-c7a7479f29c8";
 
-final string & readonly testUserId1 = "d29e781f-aa97-4449-ae85-139b67533ce1";
-
 final string & readonly testGroupId = "1fd8d238-8128-4386-8b0d-81246c6eb41d";
 
 final string[] & readonly scope = [
@@ -39,7 +37,7 @@ final UserCreate & readonly testCreateUserData = {
         givenName: "Kim",
         familyName: "Berry"
     },
-    userName: "DEFAULT/kimberry00@gmail.com",
+    userName: "DEFAULT/kasuni9@gmail.com",
     password: "aBcd!23455",
     emails: [
         {

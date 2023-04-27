@@ -120,9 +120,10 @@ public isolated client class Client {
     @display {label: "Delete User"}
     remote isolated function deleteUser(@display {label: "User Id"} string id) returns ErrorResponse|error? {
         http:ClientError? response = self.clientEndpoint->delete(string `${USERS}/${id}`);
-        if (response is http:ClientError) {
-            return getErrorResponse(response);
+        if (response is ()) {
+            return response;
         }
+        return getErrorResponse(response);
     }
 
     # Patches user data.
