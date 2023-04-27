@@ -289,12 +289,14 @@ public type UserResponse record {
 # + status - HTTP status code 
 # + schemas - URIs of the used SCIM schemas  
 # + scimType - SCIM type
-public type ErrorResponse record {
+public type ErrorResponseDetails record {
     string detail;
     string status;
     string[] schemas;
     string scimType?;
 };
+
+public type ErrorResponse distinct error<ErrorResponseDetails>;
 
 # Represents the response of the createUser and getUser operations.
 #
@@ -415,7 +417,7 @@ public type UserUpdate record {
 public type PatchOperations record {
     opType op;
     string path?;
-    UserUpdate value;
+    UserUpdate value?;
 };
 
 # Represents the request body of userPatch operation.
@@ -423,7 +425,7 @@ public type PatchOperations record {
 # + schemas - URIs of the used SCIM schemas  
 # + Operations - List of operations to be performed
 public type UserPatch record {
-    string[] schemas = [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ];
+    string[] schemas = ["urn:ietf:params:scim:api:messages:2.0:PatchOp"];
     PatchOperations[] Operations;
 };
 
@@ -439,7 +441,7 @@ public type UserPatch record {
 # + sortBy - Attribute used to order the returned responses  
 # + sortOrder - order in which the sortBy parameter is applied
 public type UserSearch record {
-    string[] schemas = [ "urn:ietf:params:scim:api:messages:2.0:SearchRequest" ];
+    string[] schemas = ["urn:ietf:params:scim:api:messages:2.0:SearchRequest"];
     string[] attributes?;
     string[] excludedAttributes?;
     string filter?;

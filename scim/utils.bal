@@ -14,6 +14,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/http;
+
 isolated function getparams(string[] array) returns string {
     string params =
             array.reduce(
@@ -21,4 +23,16 @@ isolated function getparams(string[] array) returns string {
                 initial = ""
             );
     return params;
+}
+
+isolated function getErrorResponse(http:ClientError clientError) returns ErrorResponse|error {
+    http:Detail errorDetail = check clientError.detail().ensureType();
+    string responseBodyString = check errorDetail.body.cloneWithType();
+    json responseBody = check responseBodyString.fromJsonString();
+    string[] schemas = check (check responseBody.schemas).cloneWithType();
+    return error ErrorResponse (
+        string `SCIM Error ${clientError.message()}`, 
+        detail = check responseBody.detail, 
+        status = check responseBody.status, 
+        schemas = schemas);
 }
