@@ -1,5 +1,7 @@
 # Ballerina SCIM Module
 
+[![GraalVM Check](https://github.com/ballerina-platform/module-ballerinax-scim/actions/workflows/build-with-bal-test-native.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-scim/actions/workflows/build-with-bal-test-native.yml)
+
 SCIM specification is designed to manage user identity in cloud-based applications and services in a standardized way to enable interoperability, security, and scalability. 
 
 This package contains a set of records and  in the ballerina langauge, and records can be used to map objects and do SCIM opeartions in a easy manner. This particular record types can be used to map the scim object and access its fields easily.
