@@ -32,7 +32,7 @@ jobs:
                 version: latest
 
             - name: Run Ballerina tests using the native executable
-              run: bal test --native ./scim
+              run: bal test --graalvm ./scim
               env:
                 ORG_NAME: ${{ secrets.ORG_NAME }}
                 CLIENT_ID: ${{ secrets.CLIENT_ID }}
