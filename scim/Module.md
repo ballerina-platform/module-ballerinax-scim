@@ -38,5 +38,3 @@ Invoke the connector operations by passing the required parameters.
 ```ballerina
 scim:UserResource response= check scimClient->getUser("<userId>");
 ```
-
-## 
