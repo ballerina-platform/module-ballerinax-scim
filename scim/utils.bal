@@ -27,12 +27,12 @@ isolated function getparams(string[] array) returns string {
 
 isolated function getErrorResponse(http:ClientError clientError) returns ErrorResponse|error {
     http:Detail errorDetail = check clientError.detail().ensureType();
-    string responseBodyString = check errorDetail.body.cloneWithType();
-    json responseBody = check responseBodyString.fromJsonString();
+    json responseBody = check errorDetail.body.ensureType();
     string[] schemas = check (check responseBody.schemas).cloneWithType();
+
     return error ErrorResponse (
         string `SCIM Error ${clientError.message()}`, 
         detail = check responseBody.detail, 
-        status = check responseBody.status, 
+        status = (check responseBody.status).toString(), 
         schemas = schemas);
 }
