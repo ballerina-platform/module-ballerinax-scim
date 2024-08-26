@@ -1,6 +1,6 @@
 [package]
 org = "ballerinax"
 name = "scim"
-version = "0.1.0"
+version = "0.1.1"
 distribution = "2201.4.1"
 license= ["Apache-2.0"]
