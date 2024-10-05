@@ -149,4 +149,3 @@ function testBulk() returns error? {
     BulkResponse response = check scimClient->bulk(testBulkData);
     log:printInfo(response.toString());
 }
-

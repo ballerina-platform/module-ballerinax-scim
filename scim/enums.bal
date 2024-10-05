@@ -66,4 +66,3 @@ public enum opType {
     replace,
     remove
 }
-
