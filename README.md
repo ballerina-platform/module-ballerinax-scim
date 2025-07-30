@@ -1,4 +1,4 @@
-# Ballerina Ballerina SCIM Library connector
+# Ballerina SCIM connector
 
 [![Build](https://github.com/ballerina-platform/module-ballerinax-scim/actions/workflows/ci.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-scim/actions/workflows/ci.yml)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerinax-scim.svg)](https://github.com/ballerina-platform/module-ballerinax-scim/commits/master)
