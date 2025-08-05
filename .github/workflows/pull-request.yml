@@ -1,15 +1,16 @@
-name: Pull_Request
+name: PR Build
 
-on: [pull_request]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+on: pull_request
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v2
-            - name: Ballerina Build
-              uses: ballerina-platform/ballerina-action/@nightly
-              with:
-                  args: pack ./scim
-                  
+  call_workflow:
+    name: Run PR Build Workflow
+    if: ${{ github.repository_owner == 'ballerina-platform' }}
+    uses: ballerina-platform/ballerina-library/.github/workflows/pr-build-connector-template.yml@main
+    secrets: inherit
+    with:
+      additional-test-flags: ${{ github.event.pull_request.head.repo.full_name != github.repository && '-x test' || ''}}
