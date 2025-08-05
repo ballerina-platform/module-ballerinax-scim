@@ -1,35 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Asgardeo - SCIM 2.0 Users API
+  title: SCIM 2.0 API
   description: >-
-    This document specifies **SCIM 2.0 User Management RESTful API** for
-    **Asgardeo**. This endpoint performs actions related to all users in the
-    organization. To access the SCIM 2.0 APIs in Asgardeo, you need to first
-    [get an access
-    token](https://wso2.com/asgardeo/docs/apis/authentication/#get-an-access-token)
-    from your organization.
-
-
-    This document specifies **SCIM 2.0 Group Management RESTful API** for
-    **Asgardeo**. This endpoint performs actions related to all users in the
-    organization. To access the SCIM 2.0 APIs in Asgardeo, you need to first
-    [get an access
-    token](https://wso2.com/asgardeo/docs/apis/authentication/#get-an-access-token)
-    from your organization.
-
-
-    This document specifies **SCIM 2.0 Bulk RESTful API** for **Asgardeo**. To
-    access the SCIM 2.0 APIs in Asgardeo, you need to first [get an access
-    token](https://wso2.com/asgardeo/docs/apis/authentication/#get-an-access-token)
-    from your organization.
-
-
-    This document specifies **SCIM 2.0 Service provider configuration RESTful
-    API** for **Asgardeo**.
-
-
-    This document specifies **SCIM 2.0 Resource types RESTful API** for
-    **Asgardeo**.
+    This document specifies the **SCIM 2.0 RESTful APIs** for user, group, bulk operations, service provider configuration, and resource type management.
   version: v1
 servers:
   - url: 'https://api.asgardeo.io/t/{organization-name}/scim2'
@@ -1295,19 +1268,12 @@ components:
         userName:
           type: string
           description: >-
-            By default, the username should be the email address and it will be
-            stored in the `DEFAULT` user store. However, if username validation
-            is changed to `Alphanumeric` in your Asgardeo organization, you need
-            to specify an alphanumeric value (a-z, A-Z, 0-9) as the username
-            instead of the email.
+            Unique username of the user.
           example: DEFAULT/kim@gmail.com
         password:
           type: string
           description: >-
-            Use this parameter to set a password for the user account. The user
-            will be able to reset this password later. When setting the
-            password, be sure to follow the password-validation rules configured
-            for your organization.
+            Use this parameter to set a password for the user account.
           example: aBcd!23#
         emails:
           type: array
@@ -1367,11 +1333,7 @@ components:
         userName:
           type: string
           description: >-
-            By default, the username should be the email address and it will be
-            stored in the `DEFAULT` user store. However, if username validation
-            is changed to `Alphanumeric` in your Asgardeo organization, you need
-            to specify an alphanumeric value (a-z, A-Z, 0-9) as the username
-            instead of the email.
+            Unique username of the user.
           example: DEFAULT/kim@gmail.com
         emails:
           type: array
@@ -2048,7 +2010,7 @@ components:
           type: integer
           example: 1
           description: >-
-            The number of errors that will be accepted by Asgardeo before
+            The number of errors that will be accepted by the vendor before
             returning the response.
         schemas:
           type: array
@@ -2075,7 +2037,7 @@ components:
           type: integer
           example: 1
           description: >-
-            The number of errors that will be accepted by Asgardeo before
+            The number of errors that will be accepted by the vendor before
             returning the response.
         schemas:
           type: array
@@ -2102,7 +2064,7 @@ components:
           type: integer
           example: 1
           description: >-
-            The number of errors that will be accepted by Asgardeo before
+            The number of errors that will be accepted by the vendor before
             returning the response.
         schemas:
           type: array
@@ -2129,7 +2091,7 @@ components:
           type: integer
           example: 1
           description: >-
-            The number of errors that will be accepted by Asgardeo before
+            The number of errors that will be accepted by the vendor before
             returning the response.
         schemas:
           type: array
@@ -2156,7 +2118,7 @@ components:
           type: integer
           example: 1
           description: >-
-            The number of errors that will be accepted by Asgardeo before
+            The number of errors that will be accepted by the vendor before
             returning the response.
         schemas:
           type: array
@@ -2183,7 +2145,7 @@ components:
           type: integer
           example: 1
           description: >-
-            The number of errors that will be accepted by Asgardeo before
+            The number of errors that will be accepted by the vendor before
             returning the response.
         schemas:
           type: array
@@ -2210,7 +2172,7 @@ components:
           type: integer
           example: 1
           description: >-
-            The number of errors that will be accepted by Asgardeo before
+            The number of errors that will be accepted by the vendor before
             returning the response.
         schemas:
           type: array
@@ -2237,7 +2199,7 @@ components:
           type: integer
           example: 1
           description: >-
-            The number of errors that will be accepted by Asgardeo before
+            The number of errors that will be accepted by the vendor before
             returning the response.
         schemas:
           type: array
