@@ -2,10 +2,16 @@ openapi: 3.0.3
 info:
   title: SCIM 2.0 API
   description: >-
-    This document specifies the **SCIM 2.0 RESTful APIs** for user, group, bulk operations, service provider configuration, and resource type management.
+    This client specifies the **SCIM 2.0 RESTful APIs** for user, group, bulk operations, service provider configuration, and resource type management.
   version: v1
 servers:
   - url: 'https://api.asgardeo.io/t/{organization-name}/scim2'
+    variables:
+      organization-name:
+        default: ''
+        description: Organization name for the tenant
+security:
+  - OAuth2ClientCredentials: []
 tags:
   - name: Bulk Endpoint
     description: >-
@@ -1288,6 +1294,7 @@ components:
             properties: {}
         'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User':
           type: object
+          title: Enterprise User Extension
           properties:
             manager:
               type: object
@@ -1347,6 +1354,7 @@ components:
             type: object
             properties: {}
         'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User':
+          title: Enterprise User Extension
           type: object
           properties:
             manager:
@@ -1416,6 +1424,7 @@ components:
             type: object
             properties: {}
         'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User':
+          title: Enterprise User Extension
           type: object
           properties:
             manager:
@@ -1456,10 +1465,14 @@ components:
       properties:
         schemas:
           type: array
+          items:
+            type: string
           example:
             - 'urn:ietf:params:scim:api:messages:2.0:SearchRequest'
         attributes:
           type: array
+          items:
+            type: string
           description: SCIM defined attributes parameter.
           example:
             - name.familyName
@@ -1517,6 +1530,7 @@ components:
             type: object
             properties: {}
         'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User':
+          title: Enterprise User Extension
           type: object
           properties:
             manager:
@@ -2695,3 +2709,10 @@ components:
         id:
           type: string
           example: User
+  securitySchemes:
+    OAuth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: ''
+          scopes: {}
