@@ -20,7 +20,7 @@
 import ballerina/data.jsondata;
 import ballerina/http;
 
-# This document specifies the **SCIM 2.0 RESTful APIs** for user, group, bulk operations, service provider configuration, and resource type management.
+# This client specifies the **SCIM 2.0 RESTful APIs** for user, group, bulk operations, service provider configuration, and resource type management.
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

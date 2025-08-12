@@ -52,6 +52,13 @@ public type OAuth2ClientCredentialsGrantConfig record {|
     string tokenUrl = "";
 |};
 
+public type OperationObBulk_inner record {
+    string bulkId?;
+    string method?;
+    string location?;
+    record {int code?;} status?;
+};
+
 public type BulkUserDeleteOb record {
     # The method that should be used in the operation
     string method;
@@ -60,7 +67,7 @@ public type BulkUserDeleteOb record {
 };
 
 public type UserSearchRequestObject record {
-    string[] schemas?;
+    string[] schemas;
     # SCIM defined attributes parameter.
     string[] attributes?;
     # The expression used for filtering. Supported filters are <code>ew</code>, <code>eq</code>, <code>co</code>, <code>sw</code>, and <code>and</code>.
@@ -77,7 +84,7 @@ public type SPConfigResponse record {
 };
 
 public type UserObjectPassInvite record {
-    record {} schemas?;
+    string[] schemas?;
     UserObject_name name?;
     # Unique username of the user.
     string userName?;
@@ -108,13 +115,13 @@ public type BulkGroupUpdateOb record {
 
 public type UserResponseObject record {
     UserResponseObject_meta meta;
-    record {} schemas?;
+    string[] schemas?;
     string username?;
     string id?;
     UserResponseObject_name name?;
-    record {}[] emails?;
+    (string|record {})[] emails?;
     Enterprise\ User\ Extension urn\:ietf\:params\:scim\:schemas\:extension\:enterprise\:2\.0\:User?;
-    record {} roles?;
+    UserResponseObject_roles[] roles?;
 };
 
 # Represents the Queries record for the operation: updateUser
@@ -172,6 +179,11 @@ public type BulkGroupDeleteObject record {
 public type GroupItemObj record {
     "add"|"remove"|"replace" op?;
     GroupItemObj_value value?;
+};
+
+public type UserResponseObject_roles record {
+    string 'type?;
+    string value?;
 };
 
 # Specify the new user details that should be used to replace the existing user specified in the path.
@@ -333,7 +345,7 @@ public type BulkUserReplaceOb_data_name record {
 };
 
 public type UserUpdateObject record {
-    record {} schemas?;
+    string[] schemas?;
     UserResponseObject_name name?;
     string userName?;
     record {}[] emails?;
@@ -343,7 +355,7 @@ public type UserUpdateObject record {
 public type PatchGroupOperationResponseObject record {
     string displayName?;
     GroupResponseObject_meta meta?;
-    record {} schemas?;
+    string[] schemas?;
     string id?;
     record {}[] members?;
 };
@@ -362,7 +374,7 @@ public type OperationMeItem_value record {
 };
 
 public type GroupSearchRequestObject record {
-    record {} schemas?;
+    string[] schemas;
     int startIndex?;
     string filter?;
 };
@@ -390,12 +402,7 @@ public type BulkUserUpdateObject record {
     BulkUserUpdateOb[] Operations;
 };
 
-public type OperationObBulk record {
-    string bulkId?;
-    string method?;
-    string location?;
-    OperationObBulk_status status?;
-};
+public type OperationObBulk OperationObBulk_inner[];
 
 public type ResourceTypeResponse record {
     string[] schemas?;
@@ -418,7 +425,7 @@ public type BulkUserResponseObject record {
 };
 
 public type PatchOperationInput record {
-    record {}[] schemas?;
+    string[] schemas?;
     OperationMeItem[] Operations?;
 };
 
@@ -443,7 +450,7 @@ public type GroupPutResponseObject record {
 };
 
 public type PatchGroupOperationRequestObject record {
-    string[] schemas?;
+    string[] schemas;
     GroupItemObj[] Operations?;
 };
 
@@ -464,7 +471,7 @@ public type BulkGroupCreateOb record {
     # Add this path to specify that a new user group that should be added.
     string path;
     # A unique identifier for the bulk operation. The bulkid is required for POST operations.
-    int bulkId?;
+    string bulkId?;
     # Specify the details of the new user group that should be added.
     BulkGroupCreateOb_data data;
 };
@@ -610,7 +617,7 @@ public type BulkGroupDeleteOb record {
 };
 
 public type UserObject record {
-    record {} schemas?;
+    string[] schemas?;
     UserObject_name name?;
     # Unique username of the user.
     string userName?;
@@ -654,15 +661,11 @@ public type BulkGroupReplaceObject record {
     BulkGroupReplaceOb[] Operations;
 };
 
-public type OperationObBulk_status record {
-    string code?;
-};
-
 public type UserObjectListResponseObject record {
     int totalResults?;
     int startIndex?;
     int itemsPerPage?;
-    record {} schemas?;
+    string[] schemas?;
     UserResponseObject[] Resources?;
 };
 
