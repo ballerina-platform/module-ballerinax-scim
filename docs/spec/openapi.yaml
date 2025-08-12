@@ -1253,8 +1253,9 @@ components:
       type: object
       properties:
         schemas:
-          type: object
-          properties: {}
+          type: array
+          items:
+            type: string
           example: []
         name:
           type: object
@@ -1319,8 +1320,9 @@ components:
       type: object
       properties:
         schemas:
-          type: object
-          properties: {}
+          type: array
+          items:
+            type: string
           example: []
         name:
           type: object
@@ -1396,8 +1398,9 @@ components:
               type: string
               example: User
         schemas:
-          type: object
-          properties: {}
+          type: array
+          items:
+            type: string
           example:
             - 'urn:ietf:params:scim:schemas:core:2.0:User'
             - 'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User'
@@ -1421,8 +1424,10 @@ components:
           example:
             - kim@gmail.com
           items:
-            type: object
-            properties: {}
+            oneOf:
+              - type: string
+              - type: object
+                properties: {}
         'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User':
           title: Enterprise User Extension
           type: object
@@ -1434,8 +1439,14 @@ components:
                   type: string
                   example: Taylor
         roles:
-          type: object
-          properties: {}
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              value:
+                type: string
           example:
             - type: default
               value: Internal/everyone
@@ -1452,8 +1463,9 @@ components:
           type: integer
           example: 1
         schemas:
-          type: object
-          properties: {}
+          type: array
+          items:
+            type: string
           example:
             - 'urn:ietf:params:scim:api:messages:2.0:ListResponse'
         Resources:
@@ -1462,6 +1474,8 @@ components:
             $ref: '#/components/schemas/UserResponseObject'
     UserSearchRequestObject:
       type: object
+      required:
+        - schemas
       properties:
         schemas:
           type: array
@@ -1506,8 +1520,9 @@ components:
       type: object
       properties:
         schemas:
-          type: object
-          properties: {}
+          type: array
+          items:
+            type: string
           example: []
         name:
           type: object
@@ -1545,7 +1560,7 @@ components:
         schemas:
           type: array
           items:
-            type: object
+            type: string
             example: 'urn:ietf:params:scim:api:messages:2.0:PatchOp'
         Operations:
           type: array
@@ -1812,16 +1827,19 @@ components:
       type: object
       properties:
         schemas:
-          type: object
-          properties: {}
-          example:
-            - 'urn:ietf:params:scim:api:messages:2.0:SearchRequest'
+          type: array
+          items:
+            type: string
+            example:
+              - 'urn:ietf:params:scim:api:messages:2.0:SearchRequest'
         startIndex:
           type: integer
           example: 1
         filter:
           type: string
           example: displayName eq manager
+      required:
+        - schemas
     GroupSearchResponseObject:
       type: object
       properties:
@@ -1907,6 +1925,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GroupItemObj'
+      required:
+        - schemas
     GroupItemObj:
       type: object
       properties:
@@ -1950,10 +1970,10 @@ components:
               type: string
               example: Group
         schemas:
-          type: object
-          properties: {}
-          example:
-            - 'urn:ietf:params:scim:schemas:core:2.0:Group'
+          type: array
+          items:
+            type: string
+            example: 'urn:ietf:params:scim:schemas:core:2.0:Group'
         id:
           type: string
           example: 7bac6a86-1f21-4937-9fb1-5be4a93ef469
@@ -2419,7 +2439,7 @@ components:
           description: Add this path to specify that a new user group that should be added.
           example: /Groups
         bulkId:
-          type: integer
+          type: string
           description: >-
             A unique identifier for the bulk operation. The bulkid is required
             for POST operations.
@@ -2596,24 +2616,26 @@ components:
         Operations:
           $ref: '#/components/schemas/OperationObBulk'
     OperationObBulk:
-      type: object
-      properties:
-        bulkId:
-          type: string
-          example: qwerty
-        method:
-          type: string
-          example: POST
-        location:
-          type: string
-          example: >-
-            https://api.asgardeo.io/t/{org-name}/scim2/Users/81cbba1b-c259-485d-8ba4-79afb03e5bd1
-        status:
-          type: object
-          properties:
-            code:
-              type: string
-              example: '201'
+      type: array
+      items:
+        type: object
+        properties:
+          bulkId:
+            type: string
+            example: qwerty
+          method:
+            type: string
+            example: POST
+          location:
+            type: string
+            example: >-
+              https://api.asgardeo.io/t/{org-name}/scim2/Users/81cbba1b-c259-485d-8ba4-79afb03e5bd1
+          status:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: '201'
     SPConfigResponse:
       type: object
       example:

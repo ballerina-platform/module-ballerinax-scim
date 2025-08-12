@@ -15,6 +15,7 @@ These changes are done in order to improve the overall usability, and as workaro
 4. Add authentication schemas for `Oauth2` client crednetials grant type.
 5. Add title for `urn:ietf:params:scim:schemas:extension:enterprise:2.0:User` property in `UserObject.email` (https://github.com/ballerina-platform/ballerina-library/issues/8144)
 6. Fix `components.schemas.UserSearchRequestObject.items` schema
+7. Fix spec related to schemas
 
 ## OpenAPI cli command
 
