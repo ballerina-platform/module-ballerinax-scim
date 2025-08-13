@@ -14,8 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import scim.mock as _;
-
 import ballerina/log;
 import ballerina/os;
 import ballerina/test;
