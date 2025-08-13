@@ -18,7 +18,7 @@ import ballerina/log;
 import ballerina/os;
 import ballerina/test;
 
-configurable boolean isTestOnLiveServer = os:getEnv("IS_TEST_ON_ASGARDEO") == "false";
+configurable boolean isTestOnLiveServer = os:getEnv("IS_TEST_ON_ASGARDEO") == "true";
 
 configurable string serviceUrl = isTestOnLiveServer ? os:getEnv("SERVICE_URL") : "http://localhost:443/t/scim2";
 configurable string tokenUrl = isTestOnLiveServer ? os:getEnv("TOKEN_URL") : "http://localhost:9444/oauth2/token";
@@ -37,9 +37,9 @@ function initializeClientsForMockServer() returns error? {
         scim = check new (serviceUrl = serviceUrl,
             config = {
                 auth: {
-                    tokenUrl: tokenUrl,
-                    clientId: clientId,
-                    clientSecret: clientSecret,
+                    tokenUrl,
+                    clientId,
+                    clientSecret,
                     scopes: [
                         "internal_user_mgt_list",
                         "internal_user_mgt_view",
@@ -62,9 +62,9 @@ function initializeClientsForMockServer() returns error? {
         scim = check new (serviceUrl = serviceUrl,
             config = {
                 auth: {
-                    tokenUrl: tokenUrl,
-                    clientId: clientId,
-                    clientSecret: clientSecret
+                    tokenUrl,
+                    clientId,
+                    clientSecret
                 }
             }
         );
