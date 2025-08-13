@@ -2,13 +2,19 @@
 
 The `ballerinax/scim` connector provides practical examples illustrating usage in various scenarios.
 
-[//]: # (TODO: Add examples)
-1. 
-2. 
+1. [Asgardeo Integration](https://github.com/ballerina-platform/module-ballerinax-scim/tree/main/examples/asgardeo-integration) – Demonstrates how to provision and manage users in Asgardeo using the SCIM connector. This example shows how to securely connect to Asgardeo SCIM API, create new users, and synchronize identity data between systems.
 
 ## Prerequisites
 
-[//]: # (TODO: Add prerequisites)
+1. Follow instructions to set up OAuth2 app in Asgardeo.
+
+2. Create a `config.toml` file with your Asgardeo credentials. Example:
+
+```toml
+clientId = "<client-id>"
+clientSecret = "<client-secret>"
+orgName = "<asgardeo-org-name>"
+```
 
 ## Running an example
 

@@ -1,0 +1,14 @@
+[package]
+org = "wso2"
+name = "asgardeo_integration"
+version = "0.1.0"
+distribution = "2201.12.7"
+
+[build-options]
+observabilityIncluded = true
+
+[[dependency]]
+org = "ballerinax"
+name = "scim"
+version = "1.0.0"
+repository="local"
