@@ -12,7 +12,7 @@ The `ballerinax/scim` package offers APIs to connect with SCIM 2.0 compliant ide
 
 ## Setup guide
 
-### Asgardeo
+### Asgardeo Setup
 
 #### Step 1: Register a Machine-to-Machine (M2M) application
 
@@ -81,7 +81,7 @@ Now, utilize the available connector operations.
 #### List all the users in the store
 
 ```ballerina
-UserObjectListResponseObject userList = check scim->/Users();
+scim:UserObjectListResponseObject userList = check scim->/Users();
 ```
 
 ## Examples

@@ -8,7 +8,7 @@ The `ballerinax/scim` connector provides practical examples illustrating usage i
 
 1. Follow instructions to set up OAuth2 app in Asgardeo.
 
-2. Create a `config.toml` file with your Asgardeo credentials. Example:
+2. Create a `Config.toml` file with your Asgardeo credentials. Example:
 
 ```toml
 clientId = "<client-id>"
