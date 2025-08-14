@@ -1,0 +1,36 @@
+{
+  "inputs": [
+    {
+      "inputFile": "./scim2-users.yaml",
+      "description": {
+        "append": true
+      }
+    },
+    {
+      "inputFile": "./scim2-groups.yaml",
+      "description": {
+        "append": true
+      }
+    },
+    {
+      "inputFile": "./scim2-bulk.yaml",
+      "description": {
+        "append": true
+      }
+    },
+    {
+      "inputFile": "./scim2-sp-configs.yaml",
+      "description": {
+        "append": true
+      }
+    },
+    {
+      "inputFile": "./scim2-resource-types.yaml",
+      "description": {
+        "append": true
+      }
+    }
+    
+  ],
+  "output": "./openapi.yaml"
+}
