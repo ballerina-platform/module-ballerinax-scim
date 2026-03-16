@@ -1,8 +1,15 @@
 ## Overview
 
-SCIM (System for Cross-domain Identity Management) is a widely-adopted standard protocol for automating the exchange of user identity information between identity domains, or IT systems.
+SCIM (System for Cross-domain Identity Management) is a standard protocol for automating the exchange of user identity information between identity domains or IT systems.
 
-The `ballerinax/scim` package offers APIs to connect with SCIM 2.0 compliant identity providers and services.
+The SCIM connector offers APIs to connect with SCIM 2.0 compliant identity providers and services, enabling seamless user and group management.
+
+### Key Features
+
+- Support for SCIM 2.0 protocol
+- Automate exchange of user identity information
+- Manage users and groups across identity domains
+- Integration with SCIM-compliant identity providers (e.g., Asgardeo, Okta)
 
 ## Setup guide
 
