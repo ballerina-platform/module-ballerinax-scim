@@ -5,7 +5,7 @@ name = "scim"
 version = "1.0.2"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["Identity", "Provisioning", "User", "Management", "Vendor/N/A", "Area/Security & Identity", "Type/Connector"]
+keywords = ["Identity", "Provisioning", "User", "Management", "Vendor/Other", "Area/Security & Identity", "Type/Connector"]
 icon = "icon.png"
 repository = "https://github.com/ballerina-platform/module-ballerinax-scim"
 
